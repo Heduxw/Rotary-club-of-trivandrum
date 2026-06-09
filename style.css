@@ -9,6 +9,7 @@
     --text-color: #1f2937;
     --bg-color: #f2f2f2;
     --font-main: "Arial", sans-serif;
+    --secondary-color: #17458f;
 }
 
 body {
@@ -90,7 +91,7 @@ footer {
 
 .nav-menu > li > a {
     display: block;
-    color: white;
+    color: var(--secondary-color);
     text-decoration: none;
     padding: 0 1.2rem;
     line-height: 60px;
@@ -98,7 +99,8 @@ footer {
 }
 
 .nav-menu > li > a:hover {
-    background-color: #2a5298;
+    background-color: var(--secondary-color);
+    color: #ffffff;
 }
 
 /* ─── DROPDOWN ─── */
@@ -109,6 +111,7 @@ footer {
 .dropdown-menu {
     display: none;
     position: absolute;
+    color: var(--secondary-color);
     top: 60px;
     left: 0;
     background-color: #ffffff;
@@ -122,7 +125,7 @@ footer {
 .dropdown-menu li a {
     display: block;
     padding: 0.75rem 1.2rem;
-    color: #1e3a5f;
+    color: var(--secondary-color);
     text-decoration: none;
     font-size: 0.95rem;
     transition: background 0.2s;
