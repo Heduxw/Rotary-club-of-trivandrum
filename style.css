@@ -82,6 +82,14 @@ footer {
     font-weight: bold;
 }
 
+.logo img {
+    padding: 0 2rem;
+    height: 70px; /* ← change this to resize */
+    width: auto; /* keeps aspect ratio */
+    object-fit: contain;
+    transition: opacity 0.2s;
+}
+
 /* ─── NAV MENU (desktop) ─── */
 .nav-menu {
     color: var(--secondary-color);
