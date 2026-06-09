@@ -90,8 +90,8 @@ footer {
 }
 
 .nav-menu > li > a {
-    display: block;
     color: var(--secondary-color);
+    display: block;
     text-decoration: none;
     padding: 0 1.2rem;
     line-height: 60px;
