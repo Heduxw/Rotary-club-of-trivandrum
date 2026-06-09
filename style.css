@@ -157,7 +157,7 @@ footer {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: white;
+    background-color: var(--secondary-color);
     border-radius: 3px;
     transition: all 0.3s ease;
 }
@@ -188,7 +188,7 @@ footer {
         top: 60px;
         left: 0;
         width: 100%;
-        background-color: #1e3a5f;
+        background-color: var(--secondary-color);
         z-index: 998;
     }
 
@@ -197,9 +197,11 @@ footer {
     }
 
     .nav-menu > li > a {
+        color: var(--secondary-color);
+        background-color: white;
         line-height: 1;
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid #2a5298;
+        border-bottom: 1px solid white;
     }
 
     /* Dropdown on mobile — stacked, not floating */
@@ -207,7 +209,7 @@ footer {
         position: static;
         box-shadow: none;
         border-radius: 0;
-        background-color: #162d4a;
+        background-color: white;
         min-width: 100%;
     }
 
