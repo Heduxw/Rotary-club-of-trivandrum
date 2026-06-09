@@ -232,3 +232,36 @@ footer {
         color: white;
     }
 }
+.address-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 2rem;
+    max-width: 500px;
+    font-family: Arial, sans-serif;
+    color: #2d2d2d;
+}
+
+.info-block {
+    margin-bottom: 1.2rem;
+}
+
+.info-block p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 0.2rem !important;
+}
+
+.address-card a {
+    color: #1a56db;
+    text-decoration: none;
+}
+
+.address-card a:hover {
+    text-decoration: underline;
+}
