@@ -84,6 +84,7 @@ footer {
 
 /* ─── NAV MENU (desktop) ─── */
 .nav-menu {
+    color: var(--secondary-color);
     list-style: none;
     display: flex;
     gap: 0;
