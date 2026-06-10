@@ -1,7 +1,3 @@
-<?php
-  $folder = 'Resources\slides';
-  $images = glob($folder . '*.{jpg,jpeg,png,svg,webp}', GLOB_BRACE);
-?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -48,22 +44,18 @@
             </ul>
         </nav>
 
-        <div class="slideshow-container">
-            <?php foreach ($images as $index => $image): ?>
-            <div class="slide <?= $index === 0 ? 'active' : '' ?>">
-                <img src="<?= $image ?>" alt="Slide <?= $index + 1 ?>" />
+        <div class="slider-container">
+            <div class="slide-bg" id="slideBg"></div>
+            <div class="slide-main">
+                <img id="slideImg" src="" alt="Slide" />
+                <!-- src="" empty -->
             </div>
-            <?php endforeach; ?>
-
             <button class="slide-btn prev" id="prevBtn">&#10094;</button>
             <button class="slide-btn next" id="nextBtn">&#10095;</button>
-
-            <div class="dots">
-                <?php foreach ($images as $index => $image): ?>
-                <span class="dot <?= $index === 0 ? 'active' : '' ?>"></span>
-                <?php endforeach; ?>
-            </div>
+            <div class="dots" id="dots"></div>
         </div>
+
+        <script src="photos.js"></script>
         <script src="script.js"></script>
     </body>
 </html>

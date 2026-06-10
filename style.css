@@ -72,9 +72,9 @@ footer {
     justify-content: space-between;
     background-color: #ffffff;
     padding: 0 2rem;
-    height: 80px;
+    height: 90px;
     position: relative;
-    border-bottom: 10px solid var(--secondary-color);
+    border-bottom: 20px solid var(--secondary-color);
 }
 
 .logo {
@@ -267,4 +267,118 @@ footer {
 
 .address-card a:hover {
     text-decoration: underline;
+}
+/* ─── CONTAINER ─── */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: #000;
+}
+
+/* ─── BLURRED BACKGROUND ─── */
+.slide-bg {
+    position: absolute;
+    inset: 0; /* fills entire container */
+    background-size: cover;
+    background-position: center;
+    filter: blur(12px); /* blur amount */
+    transform: scale(1.1); /* prevents blur edges showing */
+    opacity: 0.75;
+    transition: background-image 0.5s ease;
+}
+
+/* ─── MAIN CENTER IMAGE ─── */
+.slide-main {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.slide-main img {
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain; /* sharp, no crop */
+    display: block;
+}
+
+/* ─── ARROWS ─── */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+    border: none;
+    padding: 1rem 1.2rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.slide-btn:hover {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.prev {
+    left: 1rem;
+}
+.next {
+    right: 1rem;
+}
+
+/* ─── DOTS ─── */
+.dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dot.active {
+    background: white;
+}
+
+/* ─── FADE TRANSITION ─── */
+.slide-main img {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 768px) {
+    .slider-container {
+        height: 260px;
+    }
+
+    .slide-btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 1rem;
+    }
 }

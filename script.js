@@ -33,95 +33,84 @@ document.addEventListener("click", () => {
     menu.classList.remove("show");
   });
 });
+const slider = {
+  current: 0,
+  autoTimer: null,
 
-const container = document.getElementById("slideshow");
+  init() {
+    this.buildDots();
+    this.goToSlide(0);
+    this.bindEvents();
+    this.startTimer();
+  },
 
-// ─── BUILD SLIDES FROM photos.js ───
-function buildSlideshow() {
-  let slidesHTML = "";
-  let dotsHTML = '<div class="dots">';
-
-  slideshowPhotos.forEach((photo, i) => {
-    slidesHTML += `
-      <div class="slide ${i === 0 ? "active" : ""}">
-        <img src="${photo.src}" alt="Slide ${i + 1}">
-        <div class="slide-caption">
-          <p>${photo.caption}</p>
-        </div>
-      </div>
-    `;
-    dotsHTML += `<span class="dot ${i === 0 ? "active" : ""}"></span>`;
-  });
-
-  dotsHTML += "</div>";
-
-  container.innerHTML = `
-    ${slidesHTML}
-    <button class="slide-btn prev" id="prevBtn">&#10094;</button>
-    <button class="slide-btn next" id="nextBtn">&#10095;</button>
-    ${dotsHTML}
-  `;
-
-  initSlideshow();
-}
-
-// ─── SLIDESHOW LOGIC ───
-function initSlideshow() {
-  const slides = document.querySelectorAll(".slide");
-  const dots = document.querySelectorAll(".dot");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  let current = 0;
-  let autoTimer;
-
-  function goToSlide(n) {
-    slides.forEach((s) => s.classList.remove("active"));
-    dots.forEach((d) => d.classList.remove("active"));
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add("active");
-    dots[current].classList.add("active");
-  }
-
-  nextBtn.addEventListener("click", () => {
-    goToSlide(current + 1);
-    resetTimer();
-  });
-  prevBtn.addEventListener("click", () => {
-    goToSlide(current - 1);
-    resetTimer();
-  });
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => {
-      goToSlide(i);
-      resetTimer();
+  buildDots() {
+    const dotsContainer = document.getElementById("dots");
+    dotsContainer.innerHTML = ""; // clear first
+    slideshowPhotos.forEach((_, i) => {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      dot.addEventListener("click", () => {
+        this.goToSlide(i);
+        this.resetTimer();
+      });
+      dotsContainer.appendChild(dot);
     });
-  });
+  },
 
-  function startTimer() {
-    autoTimer = setInterval(() => goToSlide(current + 1), 4000);
-  }
+  goToSlide(n) {
+    const total = slideshowPhotos.length;
+    this.current = (n + total) % total;
 
-  function resetTimer() {
-    clearInterval(autoTimer);
-    startTimer();
-  }
+    const photo = slideshowPhotos[this.current]; // from photos.js
+    const img = document.getElementById("slideImg");
+    const bg = document.getElementById("slideBg");
 
-  // Swipe support
-  let touchStartX = 0;
-  container.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-  });
-  container.addEventListener("touchend", (e) => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (diff > 50) goToSlide(current + 1);
-    if (diff < -50) goToSlide(current - 1);
-    resetTimer();
-  });
+    img.src = photo.src; // your path
+    img.alt = photo.caption || "";
+    bg.style.backgroundImage = `url('${photo.src}')`;
 
-  goToSlide(0);
-  startTimer();
-}
+    document.querySelectorAll(".dot").forEach((dot, i) => {
+      dot.classList.toggle("active", i === this.current);
+    });
+  },
 
-// ─── INIT ───
-buildSlideshow();
+  bindEvents() {
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      this.goToSlide(this.current + 1);
+      this.resetTimer();
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      this.goToSlide(this.current - 1);
+      this.resetTimer();
+    });
+
+    let touchStartX = 0;
+    const container = document.querySelector(".slider-container");
+
+    container.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    container.addEventListener("touchend", (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (diff > 50) this.goToSlide(this.current + 1);
+      if (diff < -50) this.goToSlide(this.current - 1);
+      this.resetTimer();
+    });
+  },
+
+  startTimer() {
+    this.autoTimer = setInterval(() => {
+      this.goToSlide(this.current + 1);
+    }, 4000);
+  },
+
+  resetTimer() {
+    clearInterval(this.autoTimer);
+    this.startTimer();
+  },
+};
+
+slider.init();
