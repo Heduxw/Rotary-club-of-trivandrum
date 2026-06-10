@@ -1,3 +1,7 @@
+<?php
+  $folder = 'Resources\slides';
+  $images = glob($folder . '*.{jpg,jpeg,png,svg,webp}', GLOB_BRACE);
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -33,15 +37,6 @@
                 <li><a href="#">Home</a></li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Services ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Web Design</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">SEO</a></li>
-                    </ul>
-                </li>
-
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle">About ▾</a>
                     <ul class="dropdown-menu">
                         <li><a href="team">Our Team</a></li>
@@ -53,14 +48,22 @@
             </ul>
         </nav>
 
-        <div class="slideshow-container" id="slideshow">
-            <!-- Slides built by JavaScript -->
+        <div class="slideshow-container">
+            <?php foreach ($images as $index => $image): ?>
+            <div class="slide <?= $index === 0 ? 'active' : '' ?>">
+                <img src="<?= $image ?>" alt="Slide <?= $index + 1 ?>" />
+            </div>
+            <?php endforeach; ?>
+
+            <button class="slide-btn prev" id="prevBtn">&#10094;</button>
+            <button class="slide-btn next" id="nextBtn">&#10095;</button>
+
+            <div class="dots">
+                <?php foreach ($images as $index => $image): ?>
+                <span class="dot <?= $index === 0 ? 'active' : '' ?>"></span>
+                <?php endforeach; ?>
+            </div>
         </div>
-
-        <script src="photos.js"></script>
-        <!-- load photos first -->
-        <script src="script.js"></script>
-
         <script src="script.js"></script>
     </body>
 </html>

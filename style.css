@@ -72,8 +72,9 @@ footer {
     justify-content: space-between;
     background-color: #ffffff;
     padding: 0 2rem;
-    height: 60px;
+    height: 80px;
     position: relative;
+    border-bottom: 10px solid var(--secondary-color);
 }
 
 .logo {
@@ -84,14 +85,15 @@ footer {
 
 .logo img {
     padding: 0 2rem;
-    height: 70px; /* ← change this to resize */
-    width: auto; /* keeps aspect ratio */
+    height: 80px;
+    width: auto;
     object-fit: contain;
     transition: opacity 0.2s;
 }
 
 /* ─── NAV MENU (desktop) ─── */
 .nav-menu {
+    font-weight: bold;
     color: var(--secondary-color);
     list-style: none;
     display: flex;
