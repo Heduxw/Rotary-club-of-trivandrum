@@ -382,3 +382,85 @@ footer {
         font-size: 1rem;
     }
 }
+
+/* ─── EVENTS SECTION ─── */
+.events-section {
+    background: #f4f4f4;
+    padding: 2.5rem 0;
+}
+
+.events-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #1a1a1a;
+}
+
+/* ─── EVENTS CARD ─── */
+.events-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    max-width: 700px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+/* ─── SINGLE EVENT ─── */
+.event-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.event-item:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0.5rem;
+}
+
+.event-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.3rem;
+}
+
+.event-date {
+    font-size: 0.95rem;
+    color: #555;
+    padding-left: 0.5rem;
+}
+
+/* ─── SEE ALL LINK ─── */
+.see-all-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #1a56db;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.see-all-link:hover {
+    text-decoration: underline;
+}
+
+/* ─── LOADING / ERROR ─── */
+.events-loading {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+.events-error {
+    color: #c0392b;
+    font-size: 0.9rem;
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 768px) {
+    .events-card {
+        padding: 1.2rem;
+    }
+
+    .events-heading {
+        font-size: 1.5rem;
+    }
+}
