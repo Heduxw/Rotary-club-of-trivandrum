@@ -233,40 +233,6 @@ footer {
         color: white;
     }
 }
-.address-card {
-    background-color: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 2rem;
-    max-width: 500px;
-    font-family: Arial, sans-serif;
-    color: #2d2d2d;
-    margin: 2rem;
-}
-
-.info-block {
-    margin-bottom: 1.2rem;
-}
-
-.info-block p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.label {
-    font-weight: bold;
-    margin-bottom: 0.2rem !important;
-}
-
-.address-card a {
-    color: #1a56db;
-    text-decoration: none;
-}
-
-.address-card a:hover {
-    text-decoration: underline;
-}
 /* ─── CONTAINER ─── */
 .slider-container {
     position: relative;
@@ -371,7 +337,7 @@ footer {
 }
 
 /* ─── MOBILE ─── */
-@media (max-width: 768px) {
+@media (max-width: 850px) {
     .slider-container {
         height: 260px;
     }
@@ -382,84 +348,187 @@ footer {
     }
 }
 
-/* ─── EVENTS SECTION ─── */
-.events-section {
+/* ─── SECTION & GRID ─── */
+.info-section {
     background: #f4f4f4;
-    padding: 2.5rem 0;
+    padding: 2rem 0;
 }
 
-.events-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two equal columns */
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ─── SECTION HEADINGS ─── */
+.section-heading {
+    font-size: 1.6rem;
+    font-weight: 800;
     color: #1a1a1a;
+    margin-bottom: 1rem;
 }
 
-/* ─── EVENTS CARD ─── */
+.info-left .section-heading:not(:first-child) {
+    margin-top: 2rem; /* gap between team and events sections */
+}
+
+/* ─── TEAM CARD ─── */
+.team-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.team-members {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.member {
+    text-align: center;
+    flex: 1;
+}
+
+.member img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%; /* circular photos */
+    object-fit: cover;
+    margin-bottom: 0.6rem;
+}
+
+.member h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.2rem;
+}
+
+.member p {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0;
+}
+
+/* ─── CARD LINK ─── */
+.card-link {
+    color: #1a56db;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+/* ─── EVENTS CARD (reused) ─── */
 .events-card {
     background: #ffffff;
     border-radius: 10px;
     padding: 1.8rem 2rem;
-    max-width: 700px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
 }
 
-/* ─── SINGLE EVENT ─── */
-.event-item {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
+/* ─── FOUR-WAY CARD (reused, fills right column) ─── */
+.fourway-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+    padding: 2rem 2.5rem;
+    margin: 0; /* no auto-centering inside grid */
+}
+.fourway-logo {
+    height: 42px;
+    width: auto;
+}
+.fourway-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.8rem;
+}
+.fourway-header h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #17458f; /* Rotary blue */
+    margin: 0;
+}
+.fourway-list {
+    list-style: none;
+    counter-reset: fourway;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 }
 
-.event-item:last-of-type {
-    border-bottom: none;
-    margin-bottom: 0.5rem;
-}
-
-.event-name {
-    font-size: 1.15rem;
+.fourway-list li {
+    counter-increment: fourway;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 0.3rem;
+
+    display: grid;
+    grid-template-columns: 2rem 1fr; /* number column | text column */
+    align-items: center;
 }
 
-.event-date {
-    font-size: 0.95rem;
-    color: #555;
-    padding-left: 0.5rem;
+/* Number — stays left */
+.fourway-list li::before {
+    content: counter(fourway) ".";
+    font-weight: 400;
+    text-align: left;
 }
 
-/* ─── SEE ALL LINK ─── */
-.see-all-link {
-    display: inline-block;
-    margin-top: 1rem;
-    color: #1a56db;
-    font-size: 0.95rem;
-    text-decoration: none;
+/* Text — centered in its column */
+.fourway-list li {
+    text-align: center;
 }
 
-.see-all-link:hover {
-    text-decoration: underline;
-}
-
-/* ─── LOADING / ERROR ─── */
-.events-loading {
-    color: #888;
-    font-size: 0.95rem;
-}
-
-.events-error {
-    color: #c0392b;
-    font-size: 0.9rem;
+.fourway-list li::before {
+    text-align: left;
 }
 
 /* ─── MOBILE ─── */
 @media (max-width: 768px) {
-    .events-card {
-        padding: 1.2rem;
+    .fourway-card {
+        padding: 1.5rem;
+        margin: 1rem;
     }
 
-    .events-heading {
-        font-size: 1.5rem;
+    .fourway-list li {
+        font-size: 1.05rem;
+    }
+
+    .fourway-header h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* ─── MOBILE — stack everything ─── */
+@media (max-width: 850px) {
+    .info-grid {
+        grid-template-columns: 1fr; /* single column */
+    }
+
+    .team-members {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .member img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .team-card,
+    .events-card,
+    .fourway-card {
+        padding: 1.2rem 1.5rem;
     }
 }
