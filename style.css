@@ -5,7 +5,7 @@
 }
 
 :root {
-    --primary-color: #2563eb;
+    --primary-color: #f7a81b;
     --text-color: #1f2937;
     --bg-color: #f2f2f2;
     --font-main: "Arial", sans-serif;
@@ -110,8 +110,7 @@ footer {
 }
 
 .nav-menu > li > a:hover {
-    background-color: var(--secondary-color);
-    color: #ffffff;
+    color: var(--primary-color);
 }
 
 /* ─── DROPDOWN ─── */
