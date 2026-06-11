@@ -185,7 +185,7 @@ footer {
 }
 
 /* ─── MOBILE STYLES ─── */
-@media (max-width: 768px) {
+@media (max-width: 850px) {
     .hamburger {
         display: flex; /* show on mobile */
     }
