@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>News & Projects</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <section class="articles-section">
+            <div class="container">
+                <h1 class="articles-heading">News & Projects</h1>
+                <div class="articles-grid" id="articles-grid">
+                    <p class="loading">Loading articles...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Supabase library, then your config, then page script -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../scripts/supabase.js"></script>
+        <script src="../scripts/articles.js"></script>
+    </body>
+</html>
