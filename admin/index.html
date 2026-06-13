@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <!-- LOGIN VIEW -->
+        <div class="admin-login" id="login-view">
+            <h2>Admin Login</h2>
+            <input type="email" id="email" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <button id="login-btn">Log In</button>
+            <p class="error" id="login-error"></p>
+        </div>
+
+        <!-- DASHBOARD VIEW (hidden until logged in) -->
+        <div class="admin-dash" id="dash-view" style="display: none">
+            <div class="dash-header">
+                <h2>Manage Articles</h2>
+                <button id="logout-btn">Log Out</button>
+            </div>
+
+            <div class="article-form">
+                <h3>Add New Article</h3>
+                <input type="text" id="a-title" placeholder="Title" />
+                <textarea
+                    id="a-body"
+                    placeholder="Article text"
+                    rows="6"
+                ></textarea>
+                <input type="file" id="a-image" accept="image/*" />
+                <button id="add-btn">Publish Article</button>
+                <p class="form-msg" id="form-msg"></p>
+            </div>
+
+            <div class="admin-list" id="admin-list"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../scripts/supabase-config.js"></script>
+        <script src="../scripts/admin.js"></script>
+    </body>
+</html>

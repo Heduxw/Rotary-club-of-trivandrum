@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Article</title>
+        <link rel="stylesheet" href="../../css/card.css" />
+    </head>
+    <body>
+        <article class="single-article container" id="article">
+            <p class="loading">Loading...</p>
+        </article>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="supabase-config.js"></script>
+        <script>
+            async function loadArticle() {
+                const id = new URLSearchParams(location.search).get("id");
+                const el = document.getElementById("article");
+
+                const { data, error } = await supabaseClient
+                    .from("articles")
+                    .select("*")
+                    .eq("id", id)
+                    .single();
+
+                if (error || !data) {
+                    el.innerHTML = `<p class="error">Article not found.</p>`;
+                    return;
+                }
+
+                const safeTitle = data.title.replace(/</g, "&lt;");
+                const safeBody = data.body
+                    .replace(/</g, "&lt;")
+                    .replace(/\n/g, "<br>");
+
+                el.innerHTML = `
+        ${data.image_url ? `<img src="${data.image_url}" class="single-img" alt="">` : ""}
+        <h1>${safeTitle}</h1>
+        <p class="single-body">${safeBody}</p>
+        <a href="articles.html" class="back-link">← Back to all articles</a>
+      `;
+            }
+            loadArticle();
+        </script>
+    </body>
+</html>
