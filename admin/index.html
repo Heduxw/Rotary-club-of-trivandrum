@@ -4,7 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Admin</title>
-        <link rel="stylesheet" href="../css/admin.css" />
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="../media/Rotarty logo title.svg"
+        />
+        <link rel="stylesheet" href="admin.css" />
     </head>
     <body>
         <nav class="navbar">
@@ -47,7 +52,6 @@
                 <li><a href="../contact">Contact</a></li>
             </ul>
         </nav>
-        <!-- LOGIN VIEW -->
         <div class="admin-login" id="login-view">
             <h2>Admin Login</h2>
             <input type="email" id="email" placeholder="Email" />
@@ -56,32 +60,52 @@
             <p class="error" id="login-error"></p>
         </div>
 
-        <!-- DASHBOARD VIEW (hidden until logged in) -->
+        <!-- ─── DASHBOARD VIEW ─── -->
         <div class="admin-dash" id="dash-view" style="display: none">
-            <div class="dash-header">
-                <h2>Manage Articles</h2>
-                <button id="logout-btn">Log Out</button>
+            <div class="admin-layout">
+                <!-- LEFT: tabbed form -->
+                <div class="admin-card form-card">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="article">
+                            Article
+                        </button>
+                        <button class="tab" data-tab="history">History</button>
+                    </div>
+
+                    <input type="text" id="f-title" placeholder="Title" />
+                    <input type="date" id="f-date" style="display: none" />
+                    <textarea
+                        id="f-body"
+                        placeholder="Article text"
+                        rows="7"
+                    ></textarea>
+                    <input type="file" id="f-image" accept="image/*" />
+                    <button class="publish-btn" id="publish-btn">
+                        Publish Article
+                    </button>
+                    <p class="form-msg" id="form-msg"></p>
+                </div>
+
+                <!-- RIGHT: two list cards -->
+                <div class="admin-lists">
+                    <div class="admin-card list-card">
+                        <h3 class="list-title">Article</h3>
+                        <div id="article-list"></div>
+                    </div>
+
+                    <div class="admin-card list-card">
+                        <h3 class="list-title">History</h3>
+                        <div id="history-list"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="article-form">
-                <h3>Add New Article</h3>
-                <input type="text" id="a-title" placeholder="Title" />
-                <textarea
-                    id="a-body"
-                    placeholder="Article text"
-                    rows="6"
-                ></textarea>
-                <input type="file" id="a-image" accept="image/*" />
-                <button id="add-btn">Publish Article</button>
-                <p class="form-msg" id="form-msg"></p>
-            </div>
-
-            <div class="admin-list" id="admin-list"></div>
+            <button id="logout-btn" class="logout-btn">Log Out</button>
         </div>
 
+        <!-- Scripts: library → config → admin logic -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../scripts/supabase-config.js"></script>
-        <script src="../scripts/admin.js"></script>
-        <script src="../scripts/script.js"></script>
+        <script src="admin.js"></script>
     </body>
 </html>

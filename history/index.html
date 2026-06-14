@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="../css/style-secondary.css" />
-        <title>Rotary Club of Trivandrum</title>
+        <title>Our History</title>
         <link
             rel="icon"
             type="image/svg+xml"
@@ -52,6 +52,20 @@
                 <li><a href="../contact">Contact</a></li>
             </ul>
         </nav>
+        <script src="../scripts/script.js"></script>
+        <section class="articles-section">
+            <div class="container">
+                <h1 class="articles-heading">Our History</h1>
+                <div class="articles-grid" id="history-grid">
+                    <p class="loading">Loading history...</p>
+                </div>
+            </div>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../scripts/supabase-config.js"></script>
+        <!-- ../ to reach root -->
+        <script src="../scripts/history.js"></script>
         <script src="../scripts/script.js"></script>
     </body>
 </html>

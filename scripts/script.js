@@ -24,6 +24,7 @@ dropdowns.forEach((dropdown) => {
   });
 });
 
+// Click anywhere outside → close menu + dropdowns
 document.addEventListener("click", () => {
   navMenu?.classList.remove("open");
   hamburger?.classList.remove("active");
@@ -33,8 +34,8 @@ document.addEventListener("click", () => {
 });
 
 /* ============================================================
-   SLIDESHOW — images pulled from Supabase articles
-   Clicking a slide opens that article
+   SLIDESHOW — images pulled from Supabase (articles + history)
+   Clicking a slide opens the matching article or history page
    ============================================================ */
 let slideshowPhotos = []; // filled from Supabase
 
@@ -45,7 +46,7 @@ const slider = {
   init() {
     if (!document.querySelector(".slider-container")) return;
     if (slideshowPhotos.length === 0) {
-      console.warn("Slideshow: no article images to show.");
+      console.warn("Slideshow: no images to show.");
       return;
     }
     this.buildDots();
@@ -63,7 +64,7 @@ const slider = {
       const dot = document.createElement("span");
       dot.classList.add("dot");
       dot.addEventListener("click", (e) => {
-        e.stopPropagation(); // don't trigger the slide-open click
+        e.stopPropagation();
         this.goToSlide(i);
         this.resetTimer();
       });
@@ -73,9 +74,11 @@ const slider = {
 
   goToSlide(n) {
     const total = slideshowPhotos.length;
-    this.current = (n + total) % total;
+    if (total === 0) return;
 
+    this.current = (n + total) % total;
     const photo = slideshowPhotos[this.current];
+
     const img = document.getElementById("slideImg");
     const bg = document.getElementById("slideBg");
 
@@ -90,6 +93,18 @@ const slider = {
     });
   },
 
+  // Open the right page for the current slide
+  openCurrent() {
+    const photo = slideshowPhotos[this.current];
+    if (!photo?.id) return;
+
+    if (photo.type === "history") {
+      window.location.href = `history/?id=${photo.id}`;
+    } else {
+      window.location.href = `articles/article.html?id=${photo.id}`;
+    }
+  },
+
   bindEvents() {
     const nextBtn = document.getElementById("nextBtn");
     const prevBtn = document.getElementById("prevBtn");
@@ -97,7 +112,7 @@ const slider = {
     const img = document.getElementById("slideImg");
 
     nextBtn?.addEventListener("click", (e) => {
-      e.stopPropagation(); // don't open article when clicking arrow
+      e.stopPropagation();
       this.goToSlide(this.current + 1);
       this.resetTimer();
     });
@@ -108,14 +123,8 @@ const slider = {
       this.resetTimer();
     });
 
-    // ─── CLICK SLIDE → OPEN ITS ARTICLE ───
-    img?.addEventListener("click", () => {
-      const photo = slideshowPhotos[this.current];
-      if (photo?.id) {
-        window.location.href = `articles/article.html?id=${photo.id}`;
-      }
-    });
-    if (img) img.style.cursor = "pointer"; // hint it's clickable
+    // Click slide → open its page
+    img?.addEventListener("click", () => this.openCurrent());
 
     // Swipe support (mobile)
     let touchStartX = 0;
@@ -143,7 +152,7 @@ const slider = {
 };
 
 /* ============================================================
-   FETCH ARTICLE IMAGES FROM SUPABASE
+   FETCH IMAGES FROM SUPABASE (articles + history combined)
    ============================================================ */
 async function loadSlideshowImages() {
   if (typeof supabaseClient === "undefined") {
@@ -151,24 +160,39 @@ async function loadSlideshowImages() {
     return;
   }
 
-  const { data, error } = await supabaseClient
-    .from("articles")
-    .select("id, title, image_url") // id needed for the link
-    .not("image_url", "is", null) // only articles WITH an image
-    .order("created_at", { ascending: false });
+  // Query both tables in parallel
+  const [articlesRes, historyRes] = await Promise.all([
+    supabaseClient
+      .from("articles")
+      .select("id, title, image_url, created_at")
+      .not("image_url", "is", null),
+    supabaseClient
+      .from("history")
+      .select("id, title, image_url, created_at")
+      .not("image_url", "is", null),
+  ]);
 
-  if (error) {
-    console.error("Slideshow load error:", error);
-    return;
-  }
+  if (articlesRes.error)
+    console.error("Articles load error:", articlesRes.error);
+  if (historyRes.error) console.error("History load error:", historyRes.error);
 
-  slideshowPhotos = data.map((article) => ({
-    id: article.id, // used to open the article
-    src: article.image_url,
-    caption: article.title,
-  }));
+  // Map each table's rows into a common slide shape, tagging the source
+  const toSlides = (rows, type) =>
+    (rows || []).map((row) => ({
+      id: row.id,
+      src: row.image_url,
+      caption: row.title,
+      type,
+      created_at: row.created_at,
+    }));
 
-  slider.init(); // start only after images are loaded
+  // Merge and sort newest first across both sources
+  slideshowPhotos = [
+    ...toSlides(articlesRes.data, "article"),
+    ...toSlides(historyRes.data, "history"),
+  ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  slider.init();
 }
 
 loadSlideshowImages();
