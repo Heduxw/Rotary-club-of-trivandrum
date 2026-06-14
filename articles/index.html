@@ -3,10 +3,55 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>News & Projects</title>
+        <title>Projects</title>
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="../media/Rotarty logo title.svg"
+        />
         <link rel="stylesheet" href="../css/card.css" />
     </head>
     <body>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">
+                    <img
+                        src="../media/Rotary club of trivandrum.svg"
+                        alt="Rotary Club of Trivandrum"
+                    />
+                </a>
+            </div>
+
+            <!-- Hamburger Button (mobile only) -->
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="../">Home</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">About ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../team">Our Team</a></li>
+                        <li><a href="../history">History</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a
+                        href="https://calendar.google.com/calendar/embed?src=f774af5d87b6204a7e03a96d2fba3692e2d2001ec84024396aaaeb881f7f8413%40group.calendar.google.com&ctz=Asia%2FKolkata"
+                        >Events</a
+                    >
+                </li>
+
+                <li><a href="#">Donate</a></li>
+
+                <li><a href="../contact">Contact</a></li>
+            </ul>
+        </nav>
         <section class="articles-section">
             <div class="container">
                 <h1 class="articles-heading">News & Projects</h1>
@@ -18,7 +63,7 @@
 
         <!-- Supabase library, then your config, then page script -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script src="../scripts/supabase.js"></script>
+        <script src="../scripts/supabase-config.js"></script>
         <script src="../scripts/articles.js"></script>
     </body>
 </html>

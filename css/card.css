@@ -87,3 +87,238 @@
 .error {
     color: #c0392b;
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #f7a81b;
+    --text-color: #1f2937;
+    --bg-color: #f2f2f2;
+    --font-main: "Arial", sans-serif;
+    --secondary-color: #17458f;
+}
+
+body {
+    font-family: var(--font-main);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ─── LAYOUT ─── */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ─── HEADER ─── */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 0;
+}
+
+/* ─── MAIN CONTENT ─── */
+main {
+    padding: 2rem 0;
+}
+
+/* ─── FOOTER ─── */
+footer {
+    background-color: #f3f4f6;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 0 2rem;
+    height: 90px;
+    position: relative;
+    border-bottom: 20px solid var(--secondary-color);
+}
+
+.logo {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.logo img {
+    padding: 0 2rem;
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.2s;
+}
+
+/* ─── NAV MENU (desktop) ─── */
+.nav-menu {
+    font-weight: bold;
+    color: var(--secondary-color);
+    list-style: none;
+    display: flex;
+    gap: 0;
+}
+
+.nav-menu > li > a {
+    color: var(--secondary-color);
+    display: block;
+    text-decoration: none;
+    padding: 0 1.2rem;
+    line-height: 60px;
+    transition: background 0.2s;
+}
+
+.nav-menu > li > a:hover {
+    color: var(--primary-color);
+}
+
+/* ─── DROPDOWN ─── */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    color: var(--secondary-color);
+    top: 60px;
+    left: 0;
+    background-color: #ffffff;
+    min-width: 180px;
+    list-style: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 6px 6px;
+    z-index: 999;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 0.75rem 1.2rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f4ff;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* ─── HAMBURGER BUTTON ─── */
+.hamburger {
+    display: none; /* hidden on desktop */
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* ─── HAMBURGER ANIMATION (X when open) ─── */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* ─── MOBILE STYLES ─── */
+@media (max-width: 850px) {
+    .hamburger {
+        display: flex; /* show on mobile */
+    }
+
+    .nav-menu {
+        display: none; /* hidden by default on mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--secondary-color);
+        z-index: 998;
+    }
+
+    .nav-menu.open {
+        display: flex; /* shown when hamburger clicked */
+    }
+
+    .nav-menu > li > a {
+        color: var(--secondary-color);
+        background-color: white;
+        line-height: 1;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid white;
+    }
+
+    /* Dropdown on mobile — stacked, not floating */
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border-radius: 0;
+        background-color: white;
+        min-width: 100%;
+    }
+
+    .dropdown-menu li a {
+        color: #cbd5e1;
+        padding: 0.75rem 2.5rem;
+        border-bottom: 1px solid #1e3a5f;
+    }
+
+    .dropdown-menu li a:hover {
+        background-color: #1e3a5f;
+        color: white;
+    }
+}

@@ -29,7 +29,8 @@ document.getElementById("login-btn").addEventListener("click", async () => {
     password,
   });
   if (error) {
-    err.textContent = "Invalid login.";
+    err.textContent = error.message;
+    console.error(error);
     return;
   }
   showDashboard();
@@ -59,17 +60,19 @@ document.getElementById("add-btn").addEventListener("click", async () => {
   // Upload image if provided
   if (file) {
     const fileName = `${Date.now()}-${file.name}`;
+
     const { error: upErr } = await supabaseClient.storage
-      .from("article-images")
+      .from("Projects")
       .upload(fileName, file);
 
     if (upErr) {
-      msg.textContent = "Image upload failed.";
+      msg.textContent = "Upload failed: " + upErr.message;
+      console.error(upErr);
       return;
     }
 
     const { data } = supabaseClient.storage
-      .from("article-images")
+      .from("Projects")
       .getPublicUrl(fileName);
     imageUrl = data.publicUrl;
   }
