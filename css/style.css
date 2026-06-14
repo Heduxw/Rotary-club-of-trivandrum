@@ -1,3 +1,6 @@
+/* ============================================================
+   RESET & ROOT
+   ============================================================ */
 * {
     margin: 0;
     padding: 0;
@@ -5,11 +8,11 @@
 }
 
 :root {
-    --primary-color: #f7a81b;
+    --primary-color: #f7a81b; /* Rotary gold */
+    --secondary-color: #17458f; /* Rotary blue */
     --text-color: #1f2937;
     --bg-color: #f2f2f2;
     --font-main: "Arial", sans-serif;
-    --secondary-color: #17458f;
 }
 
 body {
@@ -39,26 +42,25 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ─── LAYOUT ─── */
+/* ============================================================
+   LAYOUT
+   ============================================================ */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* ─── HEADER ─── */
 header {
     background-color: var(--primary-color);
     color: white;
     padding: 1rem 0;
 }
 
-/* ─── MAIN CONTENT ─── */
 main {
     padding: 2rem 0;
 }
 
-/* ─── FOOTER ─── */
 footer {
     background-color: #f3f4f6;
     text-align: center;
@@ -66,6 +68,9 @@ footer {
     font-size: 0.875rem;
 }
 
+/* ============================================================
+   NAVBAR
+   ============================================================ */
 .navbar {
     display: flex;
     align-items: center;
@@ -91,7 +96,7 @@ footer {
     transition: opacity 0.2s;
 }
 
-/* ─── NAV MENU (desktop) ─── */
+/* ─── Nav menu (desktop) ─── */
 .nav-menu {
     font-weight: bold;
     color: var(--secondary-color);
@@ -113,7 +118,7 @@ footer {
     color: var(--primary-color);
 }
 
-/* ─── DROPDOWN ─── */
+/* ─── Dropdown ─── */
 .dropdown {
     position: relative;
 }
@@ -149,7 +154,7 @@ footer {
     display: block;
 }
 
-/* ─── HAMBURGER BUTTON ─── */
+/* ─── Hamburger button ─── */
 .hamburger {
     display: none; /* hidden on desktop */
     flex-direction: column;
@@ -171,7 +176,7 @@ footer {
     transition: all 0.3s ease;
 }
 
-/* ─── HAMBURGER ANIMATION (X when open) ─── */
+/* Hamburger animation (X when open) */
 .hamburger.active span:nth-child(1) {
     transform: translateY(8.5px) rotate(45deg);
 }
@@ -184,80 +189,32 @@ footer {
     transform: translateY(-8.5px) rotate(-45deg);
 }
 
-/* ─── MOBILE STYLES ─── */
-@media (max-width: 850px) {
-    .hamburger {
-        display: flex; /* show on mobile */
-    }
-
-    .nav-menu {
-        display: none; /* hidden by default on mobile */
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background-color: var(--secondary-color);
-        z-index: 998;
-    }
-
-    .nav-menu.open {
-        display: flex; /* shown when hamburger clicked */
-    }
-
-    .nav-menu > li > a {
-        color: var(--secondary-color);
-        background-color: white;
-        line-height: 1;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid white;
-    }
-
-    /* Dropdown on mobile — stacked, not floating */
-    .dropdown-menu {
-        position: static;
-        box-shadow: none;
-        border-radius: 0;
-        background-color: white;
-        min-width: 100%;
-    }
-
-    .dropdown-menu li a {
-        color: #cbd5e1;
-        padding: 0.75rem 2.5rem;
-        border-bottom: 1px solid #1e3a5f;
-    }
-
-    .dropdown-menu li a:hover {
-        background-color: #1e3a5f;
-        color: white;
-    }
-}
-/* ─── CONTAINER ─── */
+/* ============================================================
+   SLIDESHOW  (auto-height — never collapses on mobile)
+   ============================================================ */
 .slider-container {
     position: relative;
     width: 100%;
-    height: 500px;
     overflow: hidden;
     background: #000;
 }
 
-/* ─── BLURRED BACKGROUND ─── */
+/* Blurred background — fills the container behind the main image */
 .slide-bg {
     position: absolute;
-    inset: 0; /* fills entire container */
+    inset: 0;
     background-size: cover;
     background-position: center;
-    filter: blur(12px); /* blur amount */
-    transform: scale(1.1); /* prevents blur edges showing */
+    filter: blur(12px);
+    transform: scale(1.1); /* hides blurred edges */
     opacity: 0.75;
+    z-index: 0;
     transition: background-image 0.5s ease;
 }
 
-/* ─── MAIN CENTER IMAGE ─── */
+/* Main image — defines the container's height via height:auto */
 .slide-main {
-    position: absolute;
-    inset: 0;
+    position: relative; /* gives the container its height */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -265,13 +222,25 @@ footer {
 }
 
 .slide-main img {
-    height: 100%;
-    max-width: 100%;
-    object-fit: contain; /* sharp, no crop */
+    width: 100%;
+    height: auto; /* keeps aspect ratio, can't collapse */
+    max-height: 500px; /* desktop cap */
+    object-fit: contain;
     display: block;
+    cursor: pointer; /* hints the slide is clickable */
+    animation: fadeIn 0.5s ease;
 }
 
-/* ─── ARROWS ─── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ─── Arrows ─── */
 .slide-btn {
     position: absolute;
     top: 50%;
@@ -298,7 +267,7 @@ footer {
     right: 1rem;
 }
 
-/* ─── DOTS ─── */
+/* ─── Dots ─── */
 .dots {
     position: absolute;
     bottom: 1rem;
@@ -322,33 +291,9 @@ footer {
     background: white;
 }
 
-/* ─── FADE TRANSITION ─── */
-.slide-main img {
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* ─── MOBILE ─── */
-@media (max-width: 850px) {
-    .slider-container {
-        height: 260px;
-    }
-
-    .slide-btn {
-        padding: 0.6rem 0.8rem;
-        font-size: 1rem;
-    }
-}
-
-/* ─── SECTION & GRID ─── */
+/* ============================================================
+   INFO SECTION (Team / Events / Four-Way grid)
+   ============================================================ */
 .info-section {
     background: #f4f4f4;
     padding: 2rem 0;
@@ -356,12 +301,11 @@ footer {
 
 .info-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* two equal columns */
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
     align-items: start;
 }
 
-/* ─── SECTION HEADINGS ─── */
 .section-heading {
     font-size: 1.6rem;
     font-weight: 800;
@@ -370,10 +314,10 @@ footer {
 }
 
 .info-left .section-heading:not(:first-child) {
-    margin-top: 2rem; /* gap between team and events sections */
+    margin-top: 2rem;
 }
 
-/* ─── TEAM CARD ─── */
+/* ─── Team card ─── */
 .team-card {
     background: #ffffff;
     border-radius: 10px;
@@ -396,7 +340,7 @@ footer {
 .member img {
     width: 90px;
     height: 90px;
-    border-radius: 50%; /* circular photos */
+    border-radius: 50%;
     object-fit: cover;
     margin-bottom: 0.6rem;
 }
@@ -414,57 +358,55 @@ footer {
     margin: 0;
 }
 
-/* ─── CARD LINK ─── */
-.card-link {
+/* ─── Card links ─── */
+.card-link,
+.see-all-link {
     color: #0067c8;
     font-size: 0.9rem;
     text-decoration: none;
 }
 
-.card-link:hover {
+.card-link:hover,
+.see-all-link:hover {
     text-decoration: underline;
 }
 
-/* ─── EVENTS CARD (reused) ─── */
+/* ─── Events card ─── */
 .events-card {
     background: #ffffff;
     border-radius: 10px;
     padding: 1.8rem 2rem;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
 }
-.see-all-link {
-    color: #0067c8;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-.see-all-link:hover {
-    text-decoration: underline;
-}
 
-/* ─── FOUR-WAY CARD (reused, fills right column) ─── */
+/* ─── Four-Way Test card ─── */
 .fourway-card {
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
     padding: 2rem 2.5rem;
-    margin: 0; /* no auto-centering inside grid */
+    margin: 0;
 }
-.fourway-logo {
-    height: 42px;
-    width: auto;
-}
+
 .fourway-header {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     margin-bottom: 1.8rem;
 }
+
+.fourway-logo {
+    height: 42px;
+    width: auto;
+}
+
 .fourway-header h2 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: #17458f; /* Rotary blue */
+    color: var(--secondary-color);
     margin: 0;
 }
+
 .fourway-list {
     list-style: none;
     counter-reset: fourway;
@@ -480,48 +422,84 @@ footer {
     font-size: 1.3rem;
     font-weight: 700;
     color: #1a1a1a;
-
     display: grid;
     grid-template-columns: 2rem 1fr; /* number column | text column */
     align-items: center;
+    text-align: center; /* text centered in its column */
 }
 
-/* Number — stays left */
+/* Number stays left */
 .fourway-list li::before {
     content: counter(fourway) ".";
     font-weight: 400;
     text-align: left;
 }
 
-/* Text — centered in its column */
-.fourway-list li {
-    text-align: center;
-}
-
-.fourway-list li::before {
-    text-align: left;
-}
-
-/* ─── MOBILE ─── */
-@media (max-width: 768px) {
-    .fourway-card {
-        padding: 1.5rem;
-        margin: 1rem;
-    }
-
-    .fourway-list li {
-        font-size: 1.05rem;
-    }
-
-    .fourway-header h2 {
-        font-size: 1.3rem;
-    }
-}
-
-/* ─── MOBILE — stack everything ─── */
+/* ============================================================
+   MOBILE / RESPONSIVE
+   ============================================================ */
 @media (max-width: 850px) {
+    /* Navbar → hamburger */
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--secondary-color);
+        z-index: 998;
+    }
+
+    .nav-menu.open {
+        display: flex;
+    }
+
+    .nav-menu > li > a {
+        color: var(--secondary-color);
+        background-color: white;
+        line-height: 1;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid white;
+    }
+
+    /* Dropdown stacks inline on mobile */
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border-radius: 0;
+        background-color: white;
+        min-width: 100%;
+    }
+
+    .dropdown-menu li a {
+        color: #cbd5e1;
+        padding: 0.75rem 2.5rem;
+        border-bottom: 1px solid #1e3a5f;
+    }
+
+    .dropdown-menu li a:hover {
+        background-color: #1e3a5f;
+        color: white;
+    }
+
+    /* Slideshow shrinks but stays visible */
+    .slide-main img {
+        max-height: 260px;
+    }
+
+    .slide-btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 1rem;
+    }
+
+    /* Info grid → single column */
     .info-grid {
-        grid-template-columns: 1fr; /* single column */
+        grid-template-columns: 1fr;
     }
 
     .team-members {
@@ -538,5 +516,13 @@ footer {
     .events-card,
     .fourway-card {
         padding: 1.2rem 1.5rem;
+    }
+
+    .fourway-list li {
+        font-size: 1.05rem;
+    }
+
+    .fourway-header h2 {
+        font-size: 1.3rem;
     }
 }
