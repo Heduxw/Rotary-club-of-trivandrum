@@ -195,8 +195,27 @@ footer {
 .slider-container {
     position: relative;
     width: 100%;
+    height: 500px; /* fixed desktop height */
     overflow: hidden;
     background: #000;
+}
+
+.slide-main {
+    position: absolute; /* back to absolute */
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.slide-main img {
+    height: 100%; /* fills the fixed container */
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+    animation: fadeIn 0.5s ease;
 }
 
 /* Blurred background — fills the container behind the main image */
@@ -210,25 +229,6 @@ footer {
     opacity: 0.75;
     z-index: 0;
     transition: background-image 0.5s ease;
-}
-
-/* Main image — defines the container's height via height:auto */
-.slide-main {
-    position: relative; /* gives the container its height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
-.slide-main img {
-    width: 100%;
-    height: auto; /* keeps aspect ratio, can't collapse */
-    max-height: 500px; /* desktop cap */
-    object-fit: contain;
-    display: block;
-    cursor: pointer; /* hints the slide is clickable */
-    animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
@@ -488,8 +488,9 @@ footer {
     }
 
     /* Slideshow shrinks but stays visible */
-    .slide-main img {
-        max-height: 260px;
+
+    .slider-container {
+        height: 260px; /* fixed mobile height */
     }
 
     .slide-btn {
