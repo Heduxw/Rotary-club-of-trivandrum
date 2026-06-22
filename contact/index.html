@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../css/base.css" />
         <link rel="stylesheet" href="../css/style-secondary.css" />
-        <title>Rotary Club of Trivandrum</title>
+        <title>Contact Us | Rotary Club of Trivandrum</title>
         <link
             rel="icon"
             type="image/svg+xml"
@@ -52,6 +53,120 @@
                 <li><a href="../contact">Contact</a></li>
             </ul>
         </nav>
+
+        <section class="contact-section">
+            <div class="container">
+                <h1 class="contact-heading">Contact Us</h1>
+                <p class="contact-subheading">
+                    Have a question, want to partner on a project, or
+                    interested in joining? We would love to hear from you.
+                </p>
+
+                <div class="contact-grid">
+                    <!-- ─── CONTACT INFO ─── -->
+                    <div class="contact-info-card">
+                        <h2>Get In Touch</h2>
+                        <ul class="contact-info-list">
+                            <li>
+                                <span class="icon">&#128205;</span>
+                                <div>
+                                    <strong>Address</strong>
+                                    <span
+                                        >Rotary Club of Trivandrum,
+                                        Thiruvananthapuram, Kerala, India</span
+                                    >
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">&#128222;</span>
+                                <div>
+                                    <strong>Phone</strong>
+                                    <a href="tel:+910000000000"
+                                        >+91 00000 00000</a
+                                    >
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">&#9993;</span>
+                                <div>
+                                    <strong>Email</strong>
+                                    <a href="mailto:info@rotaryclubtvm.org"
+                                        >info@rotaryclubtvm.org</a
+                                    >
+                                </div>
+                            </li>
+                            <li>
+                                <span class="icon">&#128338;</span>
+                                <div>
+                                    <strong>Meetings</strong>
+                                    <span
+                                        >Every Tuesday, 6:30 PM</span
+                                    >
+                                </div>
+                            </li>
+                        </ul>
+
+                        <strong>Follow Us</strong>
+                        <div class="contact-social">
+                            <a href="#" aria-label="Facebook">f</a>
+                            <a href="#" aria-label="Instagram">i</a>
+                            <a href="#" aria-label="LinkedIn">in</a>
+                        </div>
+
+                        <p class="contact-placeholder-note">
+                            Address, phone, email and social links above are
+                            placeholders — update them with the club's real
+                            details.
+                        </p>
+                    </div>
+
+                    <!-- ─── CONTACT FORM ─── -->
+                    <div class="contact-form-card">
+                        <h2>Send Us a Message</h2>
+                        <form class="contact-form" id="contact-form">
+                            <div class="form-row">
+                                <div>
+                                    <label for="name">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="email">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" />
+
+                            <label for="message">Message</label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="6"
+                                required
+                            ></textarea>
+
+                            <button type="submit" class="contact-submit-btn">
+                                Send Message
+                            </button>
+                            <p class="contact-form-msg" id="contact-form-msg"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <script src="../scripts/script.js"></script>
+        <script src="../scripts/contact.js"></script>
     </body>
 </html>
