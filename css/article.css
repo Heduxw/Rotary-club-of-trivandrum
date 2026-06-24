@@ -14,6 +14,13 @@
     margin-bottom: 1.5rem;
 }
 
+.rotary-year {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
 .single-body {
     font-size: 1.05rem;
     line-height: 1.8;

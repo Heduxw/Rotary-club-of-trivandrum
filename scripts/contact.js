@@ -10,7 +10,7 @@ if (contactForm) {
         const message = document.getElementById("message").value.trim();
 
         const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-        const mailtoLink = `mailto:info@rotaryclubtvm.org?subject=${encodeURIComponent(
+        const mailtoLink = `mailto:info@rotarytrivandrumresidency.in?subject=${encodeURIComponent(
             subject || "Website Contact Form"
         )}&body=${encodeURIComponent(body)}`;
 

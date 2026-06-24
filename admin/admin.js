@@ -10,11 +10,24 @@ const dashView = document.getElementById("dash-view");
 const TABLES = {
   article: { name: "articles", label: "Article" },
   history: { name: "history", label: "History" },
+  gallery: { name: "gallery", label: "Gallery" },
 };
 
 let currentTab = "article"; // which tab is active
 let editId = null; // null = adding new, otherwise editing this id
 let editingImageUrl = null; // keeps existing image when editing without a new upload
+let editingImages = null; // keeps existing gallery images when editing
+
+/* Uploads one file to the Projects bucket and returns its public URL */
+async function uploadFile(file) {
+  const fileName = `${Date.now()}-${file.name}`;
+  const { error: upErr } = await supabaseClient.storage
+    .from("Projects")
+    .upload(fileName, file);
+  if (upErr) throw upErr;
+  return supabaseClient.storage.from("Projects").getPublicUrl(fileName).data
+    .publicUrl;
+}
 
 /* ─── ICONS ─── */
 const PENCIL = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none"
@@ -45,6 +58,7 @@ function showDashboard() {
   dashView.style.display = "block";
   loadList("article");
   loadList("history");
+  loadList("gallery");
 }
 
 document.getElementById("login-btn").addEventListener("click", async () => {
@@ -86,19 +100,34 @@ document.querySelectorAll(".tab").forEach((tab) => {
 function resetForm() {
   editId = null;
   editingImageUrl = null;
+  editingImages = null;
 
   document.getElementById("f-title").value = "";
   document.getElementById("f-body").value = "";
   document.getElementById("f-image").value = "";
   document.getElementById("f-date").value = "";
+  document.getElementById("f-year").value = "";
 
   const isHistory = currentTab === "history";
+  const isGallery = currentTab === "gallery";
+  const isArticle = currentTab === "article";
+
+  // Gallery items are image-only with an optional caption
   document.getElementById("f-date").style.display = isHistory
     ? "block"
     : "none";
+  // Rotary year applies to projects (articles) only
+  document.getElementById("f-year").style.display = isArticle
+    ? "block"
+    : "none";
+  document.getElementById("f-body").style.display = isGallery ? "none" : "block";
+  document.getElementById("f-image").multiple = isGallery;
   document.getElementById("f-body").placeholder = isHistory
     ? "Description"
     : "Article text";
+  document.getElementById("f-title").placeholder = isGallery
+    ? "Caption (optional)"
+    : "Title";
   document.getElementById("publish-btn").textContent =
     "Publish " + TABLES[currentTab].label;
   document.getElementById("form-msg").textContent = "";
@@ -112,32 +141,43 @@ document.getElementById("publish-btn").addEventListener("click", async () => {
   const body = document.getElementById("f-body").value.trim();
   const file = document.getElementById("f-image").files[0];
   const date = document.getElementById("f-date").value;
+  const year = document.getElementById("f-year").value.trim();
   const msg = document.getElementById("form-msg");
   const table = TABLES[currentTab].name;
 
-  if (!title || !body) {
+  if (currentTab === "gallery") {
+    if (!editId && !file) {
+      msg.textContent = "Please choose an image.";
+      return;
+    }
+  } else if (!title || !body) {
     msg.textContent = "Title and text are required.";
     return;
   }
   msg.textContent = "Saving...";
 
-  // Keep existing image unless a new file is chosen
-  let imageUrl = editingImageUrl;
-  if (file) {
-    const fileName = `${Date.now()}-${file.name}`;
-    const { error: upErr } = await supabaseClient.storage
-      .from("Projects")
-      .upload(fileName, file);
-    if (upErr) {
-      msg.textContent = "Image upload failed: " + upErr.message;
-      return;
+  let record;
+  try {
+    if (currentTab === "gallery") {
+      // Append any newly selected files to the album's existing images
+      const files = document.getElementById("f-image").files;
+      const images = editingImages ? [...editingImages] : [];
+      for (const f of files) {
+        images.push(await uploadFile(f));
+      }
+      record = { title: title || null, images };
+    } else {
+      // Keep existing image unless a new file is chosen
+      let imageUrl = editingImageUrl;
+      if (file) imageUrl = await uploadFile(file);
+      record = { title, body, image_url: imageUrl };
+      if (currentTab === "history") record.event_date = date || null;
+      if (currentTab === "article") record.rotary_year = year || null;
     }
-    imageUrl = supabaseClient.storage.from("Projects").getPublicUrl(fileName)
-      .data.publicUrl;
+  } catch (upErr) {
+    msg.textContent = "Image upload failed: " + upErr.message;
+    return;
   }
-
-  const record = { title, body, image_url: imageUrl };
-  if (currentTab === "history") record.event_date = date || null;
 
   let error;
   if (editId) {
@@ -177,7 +217,7 @@ async function loadList(tabKey) {
     .map(
       (item) => `
     <div class="list-row">
-      <span class="list-row-title">${esc(item.title)}</span>
+      <span class="list-row-title">${esc(item.title) || "(untitled image)"}</span>
       <span class="list-row-actions">
         <button class="icon-btn" title="Edit"
           onclick="editItem('${tabKey}','${item.id}')">${PENCIL}</button>
@@ -213,13 +253,19 @@ async function editItem(tabKey, id) {
   if (tabKey === "history") {
     document.getElementById("f-date").value = data.event_date || "";
   }
+  if (tabKey === "article") {
+    document.getElementById("f-year").value = data.rotary_year || "";
+  }
 
   editId = id;
   editingImageUrl = data.image_url || null;
+  editingImages = tabKey === "gallery" ? data.images || [] : null;
   document.getElementById("publish-btn").textContent =
     "Update " + TABLES[tabKey].label;
   document.getElementById("form-msg").textContent =
-    "Editing — pick a new image only if you want to replace the current one.";
+    tabKey === "gallery"
+      ? `Editing — this album has ${editingImages.length} image(s). Any new images you pick will be added to it.`
+      : "Editing — pick a new image only if you want to replace the current one.";
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -239,5 +285,29 @@ function esc(str) {
   return div.innerHTML;
 }
 
+/* ============================================================
+   ROTARY YEAR DROPDOWN
+   Rotary years run July–June. Lists 2008-09 up to the current
+   (or upcoming) Rotary year, newest first.
+   ============================================================ */
+function populateYearOptions() {
+  const select = document.getElementById("f-year");
+  if (!select) return;
+
+  const now = new Date();
+  // From July onward we're already in the next Rotary year
+  let latestStart = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
+  latestStart += 1; // include the upcoming Rotary year
+
+  const options = ['<option value="">Select Rotary year</option>'];
+  for (let start = latestStart; start >= 2008; start--) {
+    const end = String((start + 1) % 100).padStart(2, "0");
+    const label = `${start}-${end}`;
+    options.push(`<option value="${label}">${label}</option>`);
+  }
+  select.innerHTML = options.join("");
+}
+
 /* ─── START ─── */
+populateYearOptions();
 checkAuth();

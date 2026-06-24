@@ -40,12 +40,7 @@
                     </ul>
                 </li>
 
-                <li>
-                    <a
-                        href="https://calendar.google.com/calendar/embed?src=f774af5d87b6204a7e03a96d2fba3692e2d2001ec84024396aaaeb881f7f8413%40group.calendar.google.com&ctz=Asia%2FKolkata"
-                        >Events</a
-                    >
-                </li>
+                <li><a href="../gallery/">Gallery</a></li>
 
                 <li><a href="../articles/">Projects</a></li>
 
@@ -70,10 +65,14 @@
                             Article
                         </button>
                         <button class="tab" data-tab="history">History</button>
+                        <button class="tab" data-tab="gallery">Gallery</button>
                     </div>
 
                     <input type="text" id="f-title" placeholder="Title" />
                     <input type="date" id="f-date" style="display: none" />
+                    <select id="f-year">
+                        <option value="">Select Rotary year</option>
+                    </select>
                     <textarea
                         id="f-body"
                         placeholder="Article text"
@@ -96,6 +95,11 @@
                     <div class="admin-card list-card">
                         <h3 class="list-title">History</h3>
                         <div id="history-list"></div>
+                    </div>
+
+                    <div class="admin-card list-card">
+                        <h3 class="list-title">Gallery</h3>
+                        <div id="gallery-list"></div>
                     </div>
                 </div>
             </div>
