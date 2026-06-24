@@ -30,7 +30,9 @@ function buildYearFilter() {
 
   select.innerHTML =
     `<option value="all">All years</option>` +
-    years.map((y) => `<option value="${escapeHtml(y)}">${escapeHtml(y)}</option>`).join("");
+    years
+      .map((y) => `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`)
+      .join("");
 
   select.addEventListener("change", () => renderArticles(select.value));
 }
@@ -51,10 +53,10 @@ function renderArticles(year) {
   grid.innerHTML = list
     .map(
       (article) => `
-    <a href="article.html?id=${article.id}" class="article-card">
+    <a href="article.html?id=${encodeURIComponent(article.id)}" class="article-card">
       ${
         article.image_url
-          ? `<img src="${article.image_url}" alt="${escapeHtml(article.title)}">`
+          ? `<img src="${escapeAttr(article.image_url)}" alt="${escapeAttr(article.title)}">`
           : ""
       }
       <div class="article-card-body">
@@ -73,14 +75,8 @@ function renderArticles(year) {
 }
 
 function truncate(text, max) {
+  if (!text) return "";
   return text.length > max ? text.slice(0, max) + " ....." : text;
-}
-
-// Prevents broken layout / injection from article text
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
 }
 
 loadArticles();

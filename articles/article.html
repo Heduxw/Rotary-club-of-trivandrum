@@ -54,6 +54,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../scripts/supabase-config.js"></script>
+        <script src="../scripts/utils.js"></script>
         <script>
             async function loadArticle() {
                 const id = new URLSearchParams(location.search).get("id");
@@ -70,17 +71,12 @@
                     return;
                 }
 
-                const safeTitle = data.title.replace(/</g, "&lt;");
-                const safeBody = data.body
-                    .replace(/</g, "&lt;")
-                    .replace(/\n/g, "<br>");
-
-                const safeYear = data.rotary_year
-                    ? data.rotary_year.replace(/</g, "&lt;")
-                    : "";
+                const safeTitle = escapeHtml(data.title);
+                const safeBody = escapeHtml(data.body).replace(/\n/g, "<br>");
+                const safeYear = escapeHtml(data.rotary_year);
 
                 el.innerHTML = `
-        ${data.image_url ? `<img src="${data.image_url}" class="single-img" alt="">` : ""}
+        ${data.image_url ? `<img src="${escapeAttr(data.image_url)}" class="single-img" alt="">` : ""}
         <h1>${safeTitle}</h1>
         ${safeYear ? `<p class="rotary-year">Rotary Year ${safeYear}</p>` : ""}
         <p class="single-body">${safeBody}</p>

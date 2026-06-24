@@ -6,6 +6,17 @@
 const loginView = document.getElementById("login-view");
 const dashView = document.getElementById("dash-view");
 
+// Form fields, cached once (they exist in the DOM from page load)
+const F = {
+  title: document.getElementById("f-title"),
+  body: document.getElementById("f-body"),
+  image: document.getElementById("f-image"),
+  date: document.getElementById("f-date"),
+  year: document.getElementById("f-year"),
+  publishBtn: document.getElementById("publish-btn"),
+  msg: document.getElementById("form-msg"),
+};
+
 // Maps each tab to its database table + display label
 const TABLES = {
   article: { name: "articles", label: "Article" },
@@ -102,51 +113,42 @@ function resetForm() {
   editingImageUrl = null;
   editingImages = null;
 
-  document.getElementById("f-title").value = "";
-  document.getElementById("f-body").value = "";
-  document.getElementById("f-image").value = "";
-  document.getElementById("f-date").value = "";
-  document.getElementById("f-year").value = "";
+  F.title.value = "";
+  F.body.value = "";
+  F.image.value = "";
+  F.date.value = "";
+  F.year.value = "";
 
   const isHistory = currentTab === "history";
   const isGallery = currentTab === "gallery";
   const isArticle = currentTab === "article";
 
-  // Gallery items are image-only with an optional caption
-  document.getElementById("f-date").style.display = isHistory
-    ? "block"
-    : "none";
-  // Rotary year applies to projects (articles) only
-  document.getElementById("f-year").style.display = isArticle
-    ? "block"
-    : "none";
-  document.getElementById("f-body").style.display = isGallery ? "none" : "block";
-  document.getElementById("f-image").multiple = isGallery;
-  document.getElementById("f-body").placeholder = isHistory
-    ? "Description"
-    : "Article text";
-  document.getElementById("f-title").placeholder = isGallery
-    ? "Caption (optional)"
-    : "Title";
-  document.getElementById("publish-btn").textContent =
-    "Publish " + TABLES[currentTab].label;
-  document.getElementById("form-msg").textContent = "";
+  // Date is history-only, Rotary year is articles-only,
+  // and gallery items are image-only with an optional caption.
+  F.date.style.display = isHistory ? "block" : "none";
+  F.year.style.display = isArticle ? "block" : "none";
+  F.body.style.display = isGallery ? "none" : "block";
+  F.image.multiple = isGallery;
+  F.body.placeholder = isHistory ? "Description" : "Article text";
+  F.title.placeholder = isGallery ? "Caption (optional)" : "Title";
+  F.publishBtn.textContent = "Publish " + TABLES[currentTab].label;
+  F.msg.textContent = "";
 }
 
 /* ============================================================
    PUBLISH / UPDATE
    ============================================================ */
-document.getElementById("publish-btn").addEventListener("click", async () => {
-  const title = document.getElementById("f-title").value.trim();
-  const body = document.getElementById("f-body").value.trim();
-  const file = document.getElementById("f-image").files[0];
-  const date = document.getElementById("f-date").value;
-  const year = document.getElementById("f-year").value.trim();
-  const msg = document.getElementById("form-msg");
+F.publishBtn.addEventListener("click", async () => {
+  const title = F.title.value.trim();
+  const body = F.body.value.trim();
+  const files = F.image.files;
+  const date = F.date.value;
+  const year = F.year.value.trim();
+  const msg = F.msg;
   const table = TABLES[currentTab].name;
 
   if (currentTab === "gallery") {
-    if (!editId && !file) {
+    if (!editId && !files.length) {
       msg.textContent = "Please choose an image.";
       return;
     }
@@ -160,7 +162,6 @@ document.getElementById("publish-btn").addEventListener("click", async () => {
   try {
     if (currentTab === "gallery") {
       // Append any newly selected files to the album's existing images
-      const files = document.getElementById("f-image").files;
       const images = editingImages ? [...editingImages] : [];
       for (const f of files) {
         images.push(await uploadFile(f));
@@ -169,7 +170,7 @@ document.getElementById("publish-btn").addEventListener("click", async () => {
     } else {
       // Keep existing image unless a new file is chosen
       let imageUrl = editingImageUrl;
-      if (file) imageUrl = await uploadFile(file);
+      if (files[0]) imageUrl = await uploadFile(files[0]);
       record = { title, body, image_url: imageUrl };
       if (currentTab === "history") record.event_date = date || null;
       if (currentTab === "article") record.rotary_year = year || null;
@@ -217,7 +218,7 @@ async function loadList(tabKey) {
     .map(
       (item) => `
     <div class="list-row">
-      <span class="list-row-title">${esc(item.title) || "(untitled image)"}</span>
+      <span class="list-row-title">${escapeHtml(item.title) || "(untitled image)"}</span>
       <span class="list-row-actions">
         <button class="icon-btn" title="Edit"
           onclick="editItem('${tabKey}','${item.id}')">${PENCIL}</button>
@@ -248,21 +249,16 @@ async function editItem(tabKey, id) {
   resetForm(); // sets field visibility + labels for this tab
 
   // Fill the form with existing values
-  document.getElementById("f-title").value = data.title || "";
-  document.getElementById("f-body").value = data.body || "";
-  if (tabKey === "history") {
-    document.getElementById("f-date").value = data.event_date || "";
-  }
-  if (tabKey === "article") {
-    document.getElementById("f-year").value = data.rotary_year || "";
-  }
+  F.title.value = data.title || "";
+  F.body.value = data.body || "";
+  if (tabKey === "history") F.date.value = data.event_date || "";
+  if (tabKey === "article") F.year.value = data.rotary_year || "";
 
   editId = id;
   editingImageUrl = data.image_url || null;
   editingImages = tabKey === "gallery" ? data.images || [] : null;
-  document.getElementById("publish-btn").textContent =
-    "Update " + TABLES[tabKey].label;
-  document.getElementById("form-msg").textContent =
+  F.publishBtn.textContent = "Update " + TABLES[tabKey].label;
+  F.msg.textContent =
     tabKey === "gallery"
       ? `Editing — this album has ${editingImages.length} image(s). Any new images you pick will be added to it.`
       : "Editing — pick a new image only if you want to replace the current one.";
@@ -278,20 +274,13 @@ async function deleteItem(tabKey, id) {
   loadList(tabKey);
 }
 
-/* ─── Escape HTML (prevents broken layout / injection) ─── */
-function esc(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
-}
-
 /* ============================================================
    ROTARY YEAR DROPDOWN
    Rotary years run July–June. Lists 2008-09 up to the current
    (or upcoming) Rotary year, newest first.
    ============================================================ */
 function populateYearOptions() {
-  const select = document.getElementById("f-year");
+  const select = F.year;
   if (!select) return;
 
   const now = new Date();

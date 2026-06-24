@@ -15,7 +15,7 @@ async function loadEvents() {
     const data = await res.json();
 
     if (data.error) {
-      list.innerHTML = `<p class="events-error">${data.error.message}</p>`;
+      list.innerHTML = `<p class="events-error">${escapeHtml(data.error.message)}</p>`;
       return;
     }
 
@@ -28,7 +28,7 @@ async function loadEvents() {
       .map(
         (ev) => `
       <div class="event-item">
-        <p class="event-name">${ev.summary || "Untitled Event"}</p>
+        <p class="event-name">${escapeHtml(ev.summary || "Untitled Event")}</p>
         <p class="event-date">${formatDate(ev.start.dateTime || ev.start.date)}</p>
       </div>
     `,

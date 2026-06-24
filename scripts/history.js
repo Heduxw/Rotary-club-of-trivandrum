@@ -12,7 +12,7 @@ async function loadHistory() {
     return;
   }
 
-  if (!data.length) {
+  if (!data?.length) {
     grid.innerHTML = `<p class="loading">No history items yet.</p>`;
     return;
   }
@@ -21,11 +21,11 @@ async function loadHistory() {
     .map(
       (item) => `
     <div class="article-card">
-      ${item.image_url ? `<img src="${item.image_url}" alt="${esc(item.title)}">` : ""}
+      ${item.image_url ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title)}">` : ""}
       <div class="article-card-body">
-        <h2>${esc(item.title)}</h2>
+        <h2>${escapeHtml(item.title)}</h2>
         ${item.event_date ? `<p class="event-date">${formatDate(item.event_date)}</p>` : ""}
-        <p>${esc(item.body)}</p>
+        <p>${escapeHtml(item.body)}</p>
       </div>
     </div>
   `,
@@ -39,12 +39,6 @@ function formatDate(d) {
     month: "long",
     year: "numeric",
   });
-}
-
-function esc(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
 }
 
 loadHistory();

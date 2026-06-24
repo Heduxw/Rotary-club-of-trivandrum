@@ -32,31 +32,26 @@ async function loadGallery() {
 
   grid.innerHTML = albums
     .map((album) => {
-      const caption = escapeAttr(album.title || "");
+      const captionAttr = escapeAttr(album.title || "");
       const tiles = album.images
-        .map(
-          (url) => `
-        <button class="gallery-item" data-src="${url}" data-caption="${caption}">
-          <img src="${url}" alt="${caption}" loading="lazy" />
-        </button>`,
-        )
+        .map((url) => {
+          const safeUrl = escapeAttr(url);
+          return `
+        <button class="gallery-item" data-src="${safeUrl}" data-caption="${captionAttr}">
+          <img src="${safeUrl}" alt="${captionAttr}" loading="lazy" />
+        </button>`;
+        })
         .join("");
 
       return `
       <div class="gallery-album">
-        ${album.title ? `<h2 class="gallery-album-title">${caption}</h2>` : ""}
+        ${album.title ? `<h2 class="gallery-album-title">${escapeHtml(album.title)}</h2>` : ""}
         <div class="gallery-grid">${tiles}</div>
       </div>`;
     })
     .join("");
 
   bindLightbox();
-}
-
-function escapeAttr(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML.replace(/"/g, "&quot;");
 }
 
 function bindLightbox() {

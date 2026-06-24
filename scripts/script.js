@@ -86,7 +86,11 @@ const slider = {
       img.src = photo.src;
       img.alt = photo.caption || "";
     }
-    if (bg) bg.style.backgroundImage = `url('${photo.src}')`;
+    // Percent-encode chars that could break out of the url('…') wrapper
+    if (bg) {
+      const safeSrc = String(photo.src).replace(/['"()\\]/g, encodeURIComponent);
+      bg.style.backgroundImage = `url('${safeSrc}')`;
+    }
 
     document.querySelectorAll(".dot").forEach((dot, i) => {
       dot.classList.toggle("active", i === this.current);
