@@ -155,6 +155,9 @@ const slider = {
    FETCH IMAGES FROM SUPABASE (articles + history combined)
    ============================================================ */
 async function loadSlideshowImages() {
+  // Only the home page has a slideshow — skip the DB queries everywhere else
+  if (!document.querySelector(".slider-container")) return;
+
   if (typeof supabaseClient === "undefined") {
     console.error("supabaseClient not found — check script order in HTML.");
     return;

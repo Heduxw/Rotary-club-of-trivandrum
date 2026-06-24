@@ -1,6 +1,6 @@
 /* ============================================================
    ADMIN — login, tabbed form, add / edit / delete
-   Handles both "articles" and "history" tables.
+   Handles the "articles", "history" and "gallery" tables.
    ============================================================ */
 
 const loginView = document.getElementById("login-view");
