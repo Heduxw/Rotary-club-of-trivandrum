@@ -53,11 +53,10 @@ const TRASH = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none"
 /* ============================================================
    AUTH
    ============================================================ */
-async function checkAuth() {
-  const { data } = await supabaseClient.auth.getSession();
-  if (data.session) showDashboard();
-  else showLogin();
+function checkAuth() {
+  showLogin();
 }
+
 
 function showLogin() {
   loginView.style.display = "block";
@@ -72,27 +71,37 @@ function showDashboard() {
   loadList("gallery");
 }
 
-document.getElementById("login-btn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+const users = [
+  {
+    username: "rajesh",
+    password: "rajesh@1234"
+  },
+  {
+    username: "editor",
+    password: "Editor@123"
+  }
+];
+
+document.getElementById("login-btn").addEventListener("click", () => {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
   const err = document.getElementById("login-error");
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) {
-    err.textContent = error.message;
-    return;
+  const user = users.find(
+    u => u.username === username && u.password === password
+  );
+
+  if (user) {
+    err.textContent = "";
+    showDashboard();
+  } else {
+    err.textContent = "Invalid username or password";
   }
-  showDashboard();
 });
 
-document.getElementById("logout-btn").addEventListener("click", async () => {
-  await supabaseClient.auth.signOut();
+document.getElementById("logout-btn").addEventListener("click", () => {
   showLogin();
 });
-
 /* ============================================================
    TABS
    ============================================================ */
