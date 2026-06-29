@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>user</title>
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="../media/Rotarty logo title.svg"
+        />
+        <link rel="stylesheet" href="user.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../">
+                    <img
+                        src="../media/Rotary club of trivandrum.svg"
+                        alt="Rotary Club of Trivandrum"
+                    />
+                </a>
+            </div>
+
+            <!-- Hamburger Button (mobile only) -->
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="../">Home</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">About ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../team">Our Team</a></li>
+                        <li><a href="../history">History</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="../gallery/">Gallery</a></li>
+
+                <li><a href="../articles/">Projects</a></li>
+
+                <li><a href="../contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="user-login" id="login-view">
+            <h2>User Login</h2>
+            <input type="email" id="email" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <button id="login-btn">Log In</button>
+            <p class="error" id="login-error"></p>
+        </div>
+
+        <!-- ─── DASHBOARD VIEW ─── -->
+        <div class="user-dash" id="dash-view" style="display: none">
+            <div class="user-layout">
+                <!-- LEFT: tabbed form -->
+                <div class="user-card form-card">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="article">
+                            Article
+                        </button>
+                        <button class="tab" data-tab="history">History</button>
+                        <button class="tab" data-tab="gallery">Gallery</button>
+                    </div>
+
+                    <input type="text" id="f-title" placeholder="Title" />
+                    <input type="date" id="f-date" style="display: none" />
+                    <select id="f-year">
+                        <option value="">Select Rotary year</option>
+                    </select>
+                    <textarea
+                        id="f-body"
+                        placeholder="Article text"
+                        rows="7"
+                    ></textarea>
+                    <input type="file" id="f-image" accept="image/*" />
+                    <button class="publish-btn" id="publish-btn">
+                        Publish Article
+                    </button>
+                    <p class="form-msg" id="form-msg"></p>
+                </div>
+
+                <!-- RIGHT: two list cards -->
+                <div class="user-lists">
+                    <div class="user-card list-card">
+                        <h3 class="list-title">Article</h3>
+                        <div id="article-list"></div>
+                    </div>
+
+                    <div class="user-card list-card">
+                        <h3 class="list-title">History</h3>
+                        <div id="history-list"></div>
+                    </div>
+
+                    <div class="user-card list-card">
+                        <h3 class="list-title">Gallery</h3>
+                        <div id="gallery-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="logout-btn" class="logout-btn">Log Out</button>
+        </div>
+
+        <!-- Scripts: library → config → user logic -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../scripts/supabase-config.js"></script>
+        <script src="../scripts/utils.js"></script>
+        <script src="user.js"></script>
+    </body>
+</html>
