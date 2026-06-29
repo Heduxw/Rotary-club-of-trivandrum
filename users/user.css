@@ -120,6 +120,12 @@
     color: var(--secondary-color);
 }
 
+.resource-date {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
 .resource-name {
     font-size: 0.85rem;
     color: #888;

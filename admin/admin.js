@@ -128,9 +128,9 @@ function resetForm() {
   const isArticle = currentTab === "article";
   const isMembers = currentTab === "members";
 
-  // Date is history-only, Rotary year is articles-only, gallery items are
-  // image-only, and member files accept any document type.
-  F.date.style.display = isHistory ? "block" : "none";
+  // Date applies to history and member files, Rotary year is articles-only,
+  // gallery items are image-only, and member files accept any document type.
+  F.date.style.display = isHistory || isMembers ? "block" : "none";
   F.year.style.display = isArticle ? "block" : "none";
   F.body.style.display = isGallery || isMembers ? "none" : "block";
   F.image.multiple = isGallery;
@@ -198,7 +198,7 @@ F.publishBtn.addEventListener("click", async () => {
         file_name = files[0].name;
         file_type = files[0].type;
       }
-      record = { title, file_url, file_name, file_type };
+      record = { title, file_url, file_name, file_type, file_date: date || null };
     } else {
       // Keep existing image unless a new file is chosen
       let imageUrl = editingImageUrl;
@@ -284,6 +284,7 @@ async function editItem(tabKey, id) {
   F.title.value = data.title || "";
   F.body.value = data.body || "";
   if (tabKey === "history") F.date.value = data.event_date || "";
+  if (tabKey === "members") F.date.value = data.file_date || "";
   if (tabKey === "article") F.year.value = data.rotary_year || "";
 
   editId = id;

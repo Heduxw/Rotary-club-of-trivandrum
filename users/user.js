@@ -92,6 +92,7 @@ async function loadResources() {
       <span class="resource-icon">${fileIcon(item.file_name, item.file_type)}</span>
       <span class="resource-info">
         <span class="resource-title">${escapeHtml(item.title)}</span>
+        ${item.file_date ? `<span class="resource-date">${escapeHtml(formatDate(item.file_date))}</span>` : ""}
         ${item.file_name ? `<span class="resource-name">${escapeHtml(item.file_name)}</span>` : ""}
       </span>
       <span class="resource-action">Open ↗</span>
@@ -99,6 +100,14 @@ async function loadResources() {
   `,
     )
     .join("");
+}
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 // Picks an emoji icon from the file's type or extension
