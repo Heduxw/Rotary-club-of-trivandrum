@@ -22,12 +22,14 @@ const TABLES = {
   article: { name: "articles", label: "Article" },
   history: { name: "history", label: "History" },
   gallery: { name: "gallery", label: "Gallery" },
+  members: { name: "member_resources", label: "Member File" },
 };
 
 let currentTab = "article"; // which tab is active
 let editId = null; // null = adding new, otherwise editing this id
 let editingImageUrl = null; // keeps existing image when editing without a new upload
 let editingImages = null; // keeps existing gallery images when editing
+let editingFile = null; // keeps existing member file {url, name, type} when editing
 
 /* Uploads one file to the Projects bucket and returns its public URL */
 async function uploadFile(file) {
@@ -70,6 +72,7 @@ function showDashboard() {
   loadList("article");
   loadList("history");
   loadList("gallery");
+  loadList("members");
 }
 
 document.getElementById("login-btn").addEventListener("click", async () => {
@@ -112,6 +115,7 @@ function resetForm() {
   editId = null;
   editingImageUrl = null;
   editingImages = null;
+  editingFile = null;
 
   F.title.value = "";
   F.body.value = "";
@@ -122,15 +126,23 @@ function resetForm() {
   const isHistory = currentTab === "history";
   const isGallery = currentTab === "gallery";
   const isArticle = currentTab === "article";
+  const isMembers = currentTab === "members";
 
-  // Date is history-only, Rotary year is articles-only,
-  // and gallery items are image-only with an optional caption.
+  // Date is history-only, Rotary year is articles-only, gallery items are
+  // image-only, and member files accept any document type.
   F.date.style.display = isHistory ? "block" : "none";
   F.year.style.display = isArticle ? "block" : "none";
-  F.body.style.display = isGallery ? "none" : "block";
+  F.body.style.display = isGallery || isMembers ? "none" : "block";
   F.image.multiple = isGallery;
+  F.image.accept = isMembers
+    ? ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,image/*"
+    : "image/*";
   F.body.placeholder = isHistory ? "Description" : "Article text";
-  F.title.placeholder = isGallery ? "Caption (optional)" : "Title";
+  F.title.placeholder = isGallery
+    ? "Caption (optional)"
+    : isMembers
+      ? "Document title"
+      : "Title";
   F.publishBtn.textContent = "Publish " + TABLES[currentTab].label;
   F.msg.textContent = "";
 }
@@ -152,6 +164,15 @@ F.publishBtn.addEventListener("click", async () => {
       msg.textContent = "Please choose an image.";
       return;
     }
+  } else if (currentTab === "members") {
+    if (!title) {
+      msg.textContent = "Title is required.";
+      return;
+    }
+    if (!editId && !files.length) {
+      msg.textContent = "Please choose a file.";
+      return;
+    }
   } else if (!title || !body) {
     msg.textContent = "Title and text are required.";
     return;
@@ -167,6 +188,17 @@ F.publishBtn.addEventListener("click", async () => {
         images.push(await uploadFile(f));
       }
       record = { title: title || null, images };
+    } else if (currentTab === "members") {
+      // Keep the existing file unless a new one is chosen
+      let file_url = editingFile?.url || null;
+      let file_name = editingFile?.name || null;
+      let file_type = editingFile?.type || null;
+      if (files[0]) {
+        file_url = await uploadFile(files[0]);
+        file_name = files[0].name;
+        file_type = files[0].type;
+      }
+      record = { title, file_url, file_name, file_type };
     } else {
       // Keep existing image unless a new file is chosen
       let imageUrl = editingImageUrl;
@@ -257,11 +289,17 @@ async function editItem(tabKey, id) {
   editId = id;
   editingImageUrl = data.image_url || null;
   editingImages = tabKey === "gallery" ? data.images || [] : null;
+  editingFile =
+    tabKey === "members"
+      ? { url: data.file_url, name: data.file_name, type: data.file_type }
+      : null;
   F.publishBtn.textContent = "Update " + TABLES[tabKey].label;
   F.msg.textContent =
     tabKey === "gallery"
       ? `Editing — this album has ${editingImages.length} image(s). Any new images you pick will be added to it.`
-      : "Editing — pick a new image only if you want to replace the current one.";
+      : tabKey === "members"
+        ? "Editing — pick a new file only if you want to replace the current one."
+        : "Editing — pick a new image only if you want to replace the current one.";
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }

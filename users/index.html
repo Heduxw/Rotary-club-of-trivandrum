@@ -3,12 +3,14 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>user</title>
+        <title>Member Login | Rotary Club of Trivandrum</title>
         <link
             rel="icon"
             type="image/svg+xml"
             href="../media/Rotarty logo title.svg"
         />
+        <link rel="stylesheet" href="../css/base.css" />
+        <link rel="stylesheet" href="../css/style-secondary.css" />
         <link rel="stylesheet" href="user.css" />
     </head>
     <body>
@@ -47,70 +49,36 @@
                 <li><a href="../contact">Contact</a></li>
             </ul>
         </nav>
+
+        <!-- ─── LOGIN VIEW ─── -->
         <div class="user-login" id="login-view">
-            <h2>User Login</h2>
-            <input type="username" id="username" placeholder="username" />
+            <h2>Member Login</h2>
+            <input type="text" id="username" placeholder="Username" />
             <input type="password" id="password" placeholder="Password" />
             <button id="login-btn">Log In</button>
             <p class="error" id="login-error"></p>
         </div>
 
-        <!-- ─── DASHBOARD VIEW ─── -->
-        <div class="user-dash" id="dash-view" style="display: none">
-            <div class="user-layout">
-                <!-- LEFT: tabbed form -->
-                <div class="user-card form-card">
-                    <div class="tabs">
-                        <button class="tab active" data-tab="article">
-                            Article
-                        </button>
-                        <button class="tab" data-tab="history">History</button>
-                        <button class="tab" data-tab="gallery">Gallery</button>
-                    </div>
-
-                    <input type="text" id="f-title" placeholder="Title" />
-                    <input type="date" id="f-date" style="display: none" />
-                    <select id="f-year">
-                        <option value="">Select Rotary year</option>
-                    </select>
-                    <textarea
-                        id="f-body"
-                        placeholder="Article text"
-                        rows="7"
-                    ></textarea>
-                    <input type="file" id="f-image" accept="image/*" />
-                    <button class="publish-btn" id="publish-btn">
-                        Publish Article
-                    </button>
-                    <p class="form-msg" id="form-msg"></p>
+        <!-- ─── MEMBERS VIEW (after login) ─── -->
+        <section class="articles-section" id="dash-view" style="display: none">
+            <div class="container">
+                <div class="articles-toolbar">
+                    <h1 class="articles-heading">Members Area</h1>
+                    <button id="logout-btn" class="logout-btn">Log Out</button>
                 </div>
-
-                <!-- RIGHT: two list cards -->
-                <div class="user-lists">
-                    <div class="user-card list-card">
-                        <h3 class="list-title">Article</h3>
-                        <div id="article-list"></div>
-                    </div>
-
-                    <div class="user-card list-card">
-                        <h3 class="list-title">History</h3>
-                        <div id="history-list"></div>
-                    </div>
-
-                    <div class="user-card list-card">
-                        <h3 class="list-title">Gallery</h3>
-                        <div id="gallery-list"></div>
-                    </div>
+                <p class="resources-subheading">
+                    Documents and files shared with members.
+                </p>
+                <div class="resource-list" id="resource-list">
+                    <p class="loading">Loading files...</p>
                 </div>
             </div>
+        </section>
 
-            <button id="logout-btn" class="logout-btn">Log Out</button>
-        </div>
-
-        <!-- Scripts: library → config → user logic -->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../scripts/supabase-config.js"></script>
         <script src="../scripts/utils.js"></script>
+        <script src="../scripts/script.js"></script>
         <script src="user.js"></script>
     </body>
 </html>
