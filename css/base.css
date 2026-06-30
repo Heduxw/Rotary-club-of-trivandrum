@@ -302,8 +302,7 @@ main {
     height: 44px;
     width: auto;
     object-fit: contain;
-    background: #fff;
-    padding: 8px 12px;
+    padding: 8px px;
     border-radius: 10px;
 }
 
