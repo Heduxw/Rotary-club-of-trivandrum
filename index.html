@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="css/base.css" />
         <link rel="stylesheet" href="css/style.css" />
-        <title>Rotary Club of Trivandrum</title>
+        <title>Rotary Club of Trivandrum Residency</title>
         <link
             rel="icon"
             type="image/svg+xml"
@@ -13,136 +13,221 @@
         />
     </head>
     <body>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="#">
-                    <img
-                        src="media/Rotary club of trivandrum.svg"
-                        alt="Rotary Club of Trivandrum"
-                    />
-                </a>
-            </div>
+        <div id="navbar-root"></div>
 
-            <!-- Hamburger Button (mobile only) -->
-            <button class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#">Home</a></li>
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">About ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="team">Our Directors</a></li>
-                        <li><a href="history">History</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="gallery/">Gallery</a></li>
-
-                <li><a href="articles/">Projects</a></li>
-
-                <li><a href="contact">Contact</a></li>
-            </ul>
-        </nav>
-
-        <div class="slider-container">
-            <div class="slide-bg" id="slideBg"></div>
-            <div class="slide-main">
-                <img id="slideImg" src="" alt="Slide" />
-                <!-- src="" empty -->
-            </div>
-            <button class="slide-btn prev" id="prevBtn">&#10094;</button>
-            <button class="slide-btn next" id="nextBtn">&#10095;</button>
-            <div class="dots" id="dots"></div>
-        </div>
-
-        <section class="info-section">
-            <div class="container info-grid">
-                <!-- ─── LEFT COLUMN ─── -->
-                <div class="info-left">
-                    <!-- Meet Our Team -->
-                    <h2 class="section-heading">Meet Our Team</h2>
-                    <div class="team-card">
-                        <div class="team-members">
-                            <div class="member">
-                                <img
-                                    src="media/directors/sreejith.png"
-                                    alt="Sreejith B Singh"
-                                />
-                                <h3>Sreejith B Singh</h3>
-                                <p>President</p>
-                            </div>
-
-                            <div class="member">
-                                <img
-                                    src="media/directors/rajesh.png"
-                                    alt="Rajesh Nair"
-                                />
-                                <h3>Rajesh Nair</h3>
-                                <p>Secretary</p>
-                            </div>
-
-                            <div class="member">
-                                <img
-                                    src="media/directors/datsen.png"
-                                    alt="Datsen Tharakan"
-                                />
-                                <h3>Datsen Tharakan</h3>
-                                <p>Treasurer</p>
-                            </div>
-                        </div>
-                        <a href="team/" class="card-link"
-                            >Meet the rest of our directors</a
-                        >
+        <!-- ============ HERO ============ -->
+        <section id="home" class="hero">
+            <div class="hero__glow"></div>
+            <div class="hero__glow2"></div>
+            <div class="hero__inner">
+                <div class="hero__copy">
+                    <div class="eyebrow">
+                        Rotary Club of Trivandrum Residency
                     </div>
-
-                    <!-- Upcoming Events -->
-                    <h2 class="section-heading">Upcoming Events</h2>
-                    <div class="events-card">
-                        <div id="events-list">
-                            <p class="events-loading">Loading events...</p>
-                        </div>
-                        <a
-                            href="https://calendar.google.com/calendar/embed?src=f774af5d87b6204a7e03a96d2fba3692e2d2001ec84024396aaaeb881f7f8413%40group.calendar.google.com&ctz=Asia%2FKolkata"
-                            class="see-all-link"
-                            >See all events</a
+                    <h1 class="hero__title">Service<br />Above Self</h1>
+                    <p class="hero__text">
+                        We're a community of neighbours, friends, and leaders
+                        who unite to create lasting change — across our city and
+                        around the world.
+                    </p>
+                    <div class="hero__actions">
+                        <a href="articles/" class="btn-primary"
+                            >Explore Our Projects</a
                         >
+                        <a href="contact/" class="btn-ghost">Get Involved</a>
                     </div>
                 </div>
 
-                <!-- ─── RIGHT COLUMN ─── -->
-                <div class="info-right">
-                    <div class="fourway-card">
-                        <div class="fourway-header">
-                            <img
-                                src="media/rotary-logo.svg"
-                                alt="Rotary"
-                                class="fourway-logo"
-                            />
-                            <h2>The Four-Way Test</h2>
+                <div class="hero__media">
+                    <div class="hero__accent"></div>
+                    <div class="hero__ring"></div>
+                    <div class="slider-container">
+                        <div class="slide-bg" id="slideBg"></div>
+                        <div class="slide-main">
+                            <img id="slideImg" src="" alt="Slide" />
                         </div>
-                        <ol class="fourway-list">
-                            <li>Is it the TRUTH?</li>
-                            <li>Is it FAIR to all concerned?</li>
-                            <li>
-                                Will it build GOODWILL and BETTER FRIENDSHIPS?
-                            </li>
-                            <li>Will it be BENEFICIAL to all concerned?</li>
-                        </ol>
+                        <button class="slide-btn prev" id="prevBtn">
+                            &#10094;
+                        </button>
+                        <button class="slide-btn next" id="nextBtn">
+                            &#10095;
+                        </button>
+                        <div class="dots" id="dots"></div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ============ FOUR-WAY TEST ============ -->
+        <section id="about" class="fourway">
+            <div class="fourway__halo"></div>
+            <div class="fourway__inner">
+                <div class="eyebrow">Our Guiding Principle</div>
+                <h2 class="fourway__title">The Four-Way Test</h2>
+                <p class="fourway__sub">Of the things we think, say or do —</p>
+                <div class="fourway__grid">
+                    <div class="fourway__card">
+                        <span class="fourway__num">1</span>
+                        <h3>Is it the <span>Truth</span>?</h3>
+                    </div>
+                    <div class="fourway__card">
+                        <span class="fourway__num">2</span>
+                        <h3>Is it <span>Fair</span> to all concerned?</h3>
+                    </div>
+                    <div class="fourway__card">
+                        <span class="fourway__num">3</span>
+                        <h3>
+                            Will it build <span>Goodwill</span> and better
+                            friendships?
+                        </h3>
+                    </div>
+                    <div class="fourway__card">
+                        <span class="fourway__num">4</span>
+                        <h3>
+                            Will it be <span>Beneficial</span> to all concerned?
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ MEET OUR TEAM ============ -->
+        <section id="team" class="team">
+            <div class="team__inner">
+                <div class="team__head">
+                    <span class="eyebrow">Leadership</span>
+                    <h2 class="team__title">Meet Our Team</h2>
+                </div>
+                <div class="team__grid">
+                    <div class="team-card">
+                        <div class="team-card__photo">
+                            <img
+                                src="media/directors/sreejith.png"
+                                alt="Sreejith B Singh"
+                            />
+                        </div>
+                        <h3>Sreejith B Singh</h3>
+                        <p class="role">President</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-card__photo">
+                            <img
+                                src="media/directors/rajesh.png"
+                                alt="Rajesh Nair"
+                            />
+                        </div>
+                        <h3>Rajesh Nair</h3>
+                        <p class="role">Secretary</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-card__photo">
+                            <img
+                                src="media/directors/datsen.png"
+                                alt="Datsen Tharakan"
+                            />
+                        </div>
+                        <h3>Datsen Tharakan</h3>
+                        <p class="role">Treasurer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ GALLERY PREVIEW ============ -->
+        <section id="gallery" class="preview">
+            <div class="preview__inner">
+                <div class="preview__head">
+                    <div>
+                        <span class="eyebrow">In Action</span>
+                        <h2 class="preview__title">
+                            Moments from our projects
+                        </h2>
+                    </div>
+                    <a href="gallery/" class="preview__link"
+                        >View full gallery →</a
+                    >
+                </div>
+                <div class="action-grid" id="action-grid">
+                    <div class="action-tile"><span>Photo</span></div>
+                    <div class="action-tile"><span>Photo</span></div>
+                    <div class="action-tile"><span>Photo</span></div>
+                    <div class="action-tile"><span>Photo</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ CTA ============ -->
+        <section id="projects" class="cta">
+            <div class="cta__band">
+                <div>
+                    <h2 class="cta__title">Become part of something bigger.</h2>
+                    <p class="cta__text">
+                        Join a network of people who turn compassion into
+                        action. Every project starts with one member who said
+                        yes.
+                    </p>
+                </div>
+                <a href="contact/" class="cta__btn">Contact Us</a>
+            </div>
+        </section>
+
+        <!-- ============ FOOTER ============ -->
+        <footer id="contact" class="site-footer">
+            <div class="site-footer__inner">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="footer-brand__logo">
+                            <img
+                                class="footer-logo-img"
+                                src="media/Rotary club of trivandrum.svg"
+                                alt="Rotary Club of Trivandrum"
+                            />
+                        </div>
+                        <p>
+                            Rotary Club of Trivandrum Residency — neighbours and
+                            leaders united in service to our community.
+                        </p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Explore</h4>
+                        <a href="index.html">Home</a>
+                        <a href="#team">Our Team</a>
+                        <a href="history/">History</a>
+                        <a href="gallery/">Gallery</a>
+                        <a href="articles/">Projects</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Get Involved</h4>
+                        <a href="contact/">Become a Member</a>
+                        <a href="articles/">Our Projects</a>
+                        <a href="users/">Member Login</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <span
+                            >VRA 59, Lavanya, Mosque Lane, Kesavadasapuram,
+                            Thiruvananthapuram, Kerala, India</span
+                        >
+                        <a href="mailto:info@rotarytrivandrumresidency.in"
+                            >info@rotarytrivandrumresidency.in</a
+                        >
+                        <a href="tel:+919496063303">+91 94960 63303</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span
+                        >© 2026 Rotary Club of Trivandrum Residency. All rights
+                        reserved.</span
+                    >
+                    <span class="tagline">Service Above Self</span>
+                </div>
+            </div>
+        </footer>
+
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="scripts/supabase-config.js"></script>
         <script src="scripts/utils.js"></script>
-        <script src="scripts/config.js"></script>
-        <script src="scripts/calendar.js"></script>
         <script src="scripts/script.js"></script>
+        <script src="scripts/navbar.js"></script>
     </body>
 </html>

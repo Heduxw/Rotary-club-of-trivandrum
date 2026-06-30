@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap");
+
 /* ============================================================
-   BASE — shared reset, theme, layout & navbar
+   BASE — design tokens, reset, shared navbar + footer
    Loaded on every page before its page-specific stylesheet.
    ============================================================ */
 * {
@@ -9,15 +11,26 @@
 }
 
 :root {
+    /* Brand */
     --primary-color: #f7a81b; /* Rotary gold */
     --secondary-color: #17458f; /* Rotary blue */
-    --text-color: #1f2937;
-    --bg-color: #f2f2f2;
-    --font-main: "Arial", sans-serif;
+    --gold: #f7a81b;
+    --gold-dark: #c8841a;
+    --blue: #17458f;
+    --navy: #13203a;
+    --navy-deep: #0f2d5c;
+    --navy-dark: #15294d; /* legacy alias used by other pages */
+    --text-color: #13203a;
+    --muted: #5a6680;
+    --bg-color: #ffffff;
+    /* Type */
+    --font-head: "Archivo", "Arial", sans-serif;
+    --font-body: "Public Sans", "Arial", sans-serif;
+    --font-main: var(--font-body); /* legacy alias */
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     color: var(--text-color);
     background-color: var(--bg-color);
     line-height: 1.6;
@@ -26,7 +39,8 @@ body {
 h1,
 h2,
 h3 {
-    font-weight: bold;
+    font-family: var(--font-head);
+    font-weight: 800;
     margin-bottom: 1rem;
 }
 
@@ -35,7 +49,7 @@ p {
 }
 
 a {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     text-decoration: none;
 }
 
@@ -43,7 +57,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ─── LAYOUT ─── */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -60,100 +73,131 @@ main {
     padding: 2rem 0;
 }
 
-footer {
-    background-color: #f3f4f6;
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.875rem;
+/* Any leftover legacy navbar is hidden — the shared nav is injected */
+nav.navbar {
+    display: none;
 }
 
-/* ─── NAVBAR ─── */
-.navbar {
+/* ============================================================
+   SHARED NAVBAR  (injected by scripts/navbar.js)
+   ============================================================ */
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ffffff;
-    padding: 0 2rem;
-    height: 90px;
-    position: relative;
-    border-bottom: 20px solid var(--secondary-color);
+    height: 78px;
+    padding: 0 clamp(20px, 4vw, 48px);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(23, 69, 143, 0.1);
 }
 
-.logo {
-    color: white;
-    font-size: 1.4rem;
-    font-weight: bold;
+.site-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    text-decoration: none;
 }
 
-.logo img {
-    padding: 0 2rem;
-    height: 80px;
+.site-nav__brand:hover {
+    text-decoration: none;
+}
+
+.site-nav__logo-img {
+    display: block;
+    height: 52px;
     width: auto;
     object-fit: contain;
-    transition: opacity 0.2s;
 }
 
-/* ─── NAV MENU (desktop) ─── */
-.nav-menu {
-    font-weight: bold;
-    color: var(--secondary-color);
-    list-style: none;
+@media (max-width: 900px) {
+    .site-nav__logo-img {
+        height: 44px;
+    }
+}
+
+.site-nav__menu {
     display: flex;
-    gap: 0;
+    align-items: center;
+    gap: clamp(18px, 2.4vw, 34px);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
 }
 
-.nav-menu > li > a {
-    color: var(--secondary-color);
-    display: block;
+.site-nav__menu > a,
+.site-nav__droptoggle {
+    color: var(--blue);
     text-decoration: none;
-    padding: 0 1.2rem;
-    line-height: 60px;
-    transition: background 0.2s;
+    transition: color 0.15s;
+    cursor: pointer;
 }
 
-.nav-menu > li > a:hover {
-    color: var(--primary-color);
+.site-nav__menu > a:hover,
+.site-nav__droptoggle:hover {
+    color: var(--gold-dark);
+    text-decoration: none;
 }
 
-/* ─── DROPDOWN ─── */
-.dropdown {
+.site-nav__login {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: var(--blue);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 14px;
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+
+.site-nav__login:hover {
+    background: #1d56b0;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+/* Dropdown */
+.site-nav__dropdown {
     position: relative;
 }
 
-.dropdown-menu {
+.site-nav__dropmenu {
     display: none;
     position: absolute;
-    color: var(--secondary-color);
-    top: 60px;
+    top: 36px;
     left: 0;
-    background-color: #ffffff;
     min-width: 180px;
-    list-style: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 0 0 6px 6px;
-    z-index: 999;
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 8px 24px rgba(20, 40, 80, 0.14);
+    overflow: hidden;
+    padding: 6px 0;
 }
 
-.dropdown-menu li a {
+.site-nav__dropdown.open .site-nav__dropmenu {
     display: block;
-    padding: 0.75rem 1.2rem;
-    color: var(--secondary-color);
-    text-decoration: none;
+}
+
+.site-nav__dropmenu a {
+    display: block;
+    padding: 0.7rem 1.2rem;
+    color: var(--blue);
     font-size: 0.95rem;
-    transition: background 0.2s;
 }
 
-.dropdown-menu li a:hover {
-    background-color: #f0f4ff;
+.site-nav__dropmenu a:hover {
+    background: #f0f4ff;
+    text-decoration: none;
 }
 
-.dropdown-menu.show {
-    display: block;
-}
-
-/* ─── HAMBURGER BUTTON ─── */
-.hamburger {
-    display: none; /* hidden on desktop */
+/* Hamburger */
+.site-nav__burger {
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     width: 28px;
@@ -164,74 +208,181 @@ footer {
     padding: 0;
 }
 
-.hamburger span {
+.site-nav__burger span {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: var(--secondary-color);
+    background: var(--blue);
     border-radius: 3px;
     transition: all 0.3s ease;
 }
 
-/* Hamburger animation (X when open) */
-.hamburger.active span:nth-child(1) {
+.site-nav.open .site-nav__burger span:nth-child(1) {
     transform: translateY(8.5px) rotate(45deg);
 }
-
-.hamburger.active span:nth-child(2) {
+.site-nav.open .site-nav__burger span:nth-child(2) {
     opacity: 0;
 }
-
-.hamburger.active span:nth-child(3) {
+.site-nav.open .site-nav__burger span:nth-child(3) {
     transform: translateY(-8.5px) rotate(-45deg);
 }
 
-/* ─── MOBILE NAV ─── */
-@media (max-width: 850px) {
-    .hamburger {
-        display: flex; /* show on mobile */
+@media (max-width: 900px) {
+    .site-nav__burger {
+        display: flex;
     }
 
-    .nav-menu {
-        display: none; /* hidden by default on mobile */
-        flex-direction: column;
+    .site-nav__menu {
+        display: none;
         position: absolute;
-        top: 60px;
+        top: 78px;
         left: 0;
-        width: 100%;
-        background-color: var(--secondary-color);
-        z-index: 998;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: #fff;
+        border-bottom: 1px solid rgba(23, 69, 143, 0.1);
+        box-shadow: 0 12px 24px rgba(20, 40, 80, 0.1);
+        padding: 0.5rem 0;
     }
 
-    .nav-menu.open {
-        display: flex; /* shown when hamburger clicked */
+    .site-nav.open .site-nav__menu {
+        display: flex;
     }
 
-    .nav-menu > li > a {
-        color: var(--secondary-color);
-        background-color: white;
-        line-height: 1;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid white;
+    .site-nav__menu > a,
+    .site-nav__droptoggle {
+        padding: 0.9rem clamp(20px, 4vw, 48px);
     }
 
-    /* Dropdown stacks inline on mobile */
-    .dropdown-menu {
+    .site-nav__dropmenu {
         position: static;
         box-shadow: none;
         border-radius: 0;
-        background-color: white;
-        min-width: 100%;
+        padding: 0;
     }
 
-    .dropdown-menu li a {
-        color: #cbd5e1;
-        padding: 0.75rem 2.5rem;
-        border-bottom: 1px solid #1e3a5f;
+    .site-nav__dropmenu a {
+        padding-left: calc(clamp(20px, 4vw, 48px) + 1rem);
     }
 
-    .dropdown-menu li a:hover {
-        background-color: #1e3a5f;
-        color: white;
+    .site-nav__login {
+        margin: 0.6rem clamp(20px, 4vw, 48px);
+        text-align: center;
+    }
+}
+
+/* ============================================================
+   SHARED FOOTER
+   ============================================================ */
+.site-footer {
+    background: var(--navy-deep);
+    color: #fff;
+    padding: 72px clamp(20px, 4vw, 48px) 36px;
+}
+
+.site-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-brand__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.footer-brand__logo .ring {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.footer-brand__logo .ring::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+.footer-brand__logo span {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.footer-brand p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.66);
+    max-width: 320px;
+    margin: 0;
+}
+
+.footer-col h4 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+}
+
+.footer-col a,
+.footer-col span {
+    display: block;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.footer-col a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 28px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-bottom .tagline {
+    letter-spacing: 0.06em;
+}
+
+@media (max-width: 850px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
     }
 }

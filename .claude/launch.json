@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "rotary",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\sreej\\OneDrive\\Documents\\Rotary website\\Rotary-club-of-trivandrum\\.claude\\static-server.ps1"
+      ],
+      "port": 8123
+    }
+  ]
+}

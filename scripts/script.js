@@ -1,41 +1,7 @@
 /* ============================================================
-   NAVBAR — Hamburger + Dropdown
-   ============================================================ */
-const hamburger = document.getElementById("hamburger");
-const navMenu = document.getElementById("nav-menu");
-const dropdowns = document.querySelectorAll(".dropdown");
-
-if (hamburger && navMenu) {
-  hamburger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    hamburger.classList.toggle("active");
-    navMenu.classList.toggle("open");
-  });
-}
-
-dropdowns.forEach((dropdown) => {
-  dropdown.addEventListener("click", function (e) {
-    e.stopPropagation();
-    const menu = this.querySelector(".dropdown-menu");
-    document.querySelectorAll(".dropdown-menu.show").forEach((open) => {
-      if (open !== menu) open.classList.remove("show");
-    });
-    menu.classList.toggle("show");
-  });
-});
-
-// Click anywhere outside → close menu + dropdowns
-document.addEventListener("click", () => {
-  navMenu?.classList.remove("open");
-  hamburger?.classList.remove("active");
-  document.querySelectorAll(".dropdown-menu.show").forEach((menu) => {
-    menu.classList.remove("show");
-  });
-});
-
-/* ============================================================
    SLIDESHOW — images pulled from Supabase (articles + history)
    Clicking a slide opens the matching article or history page
+   The navbar lives in scripts/navbar.js
    ============================================================ */
 let slideshowPhotos = []; // filled from Supabase
 
@@ -203,3 +169,43 @@ async function loadSlideshowImages() {
 }
 
 loadSlideshowImages();
+
+/* ============================================================
+   "IN ACTION" PREVIEW — first few gallery photos on the home page
+   ============================================================ */
+async function loadActionImages() {
+  const grid = document.getElementById("action-grid");
+  if (!grid || typeof supabaseClient === "undefined") return;
+
+  const { data, error } = await supabaseClient
+    .from("gallery")
+    .select("images, created_at")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("In Action load error:", error);
+    return;
+  }
+
+  // Flatten all album images, newest album first, take the first four
+  const images = [];
+  (data || []).forEach((album) => {
+    if (Array.isArray(album.images)) images.push(...album.images);
+  });
+
+  if (!images.length) return; // keep the placeholder tiles
+
+  let html = "";
+  for (let i = 0; i < 4; i++) {
+    if (images[i]) {
+      html += `<a class="action-tile" href="gallery/"><img src="${escapeAttr(
+        images[i],
+      )}" alt="" loading="lazy" /></a>`;
+    } else {
+      html += `<div class="action-tile"><span>Photo</span></div>`;
+    }
+  }
+  grid.innerHTML = html;
+}
+
+loadActionImages();
