@@ -9,82 +9,160 @@
             http-equiv="Content-Security-Policy"
             content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://egdbbovmwpexdkwkuuts.supabase.co; connect-src 'self' https://egdbbovmwpexdkwkuuts.supabase.co wss://egdbbovmwpexdkwkuuts.supabase.co https://www.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'"
         />
-        <title>Admin</title>
+        <title>Admin | Rotary Club of Trivandrum Residency</title>
         <link
             rel="icon"
             type="image/svg+xml"
             href="../media/Rotarty logo title.svg"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="preconnect" href="https://egdbbovmwpexdkwkuuts.supabase.co" />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap"
+        />
+        <link rel="stylesheet" href="../css/base.min.css" />
         <link rel="stylesheet" href="admin.css" />
     </head>
     <body>
         <div id="navbar-root"></div>
-        <div class="admin-login" id="login-view">
-            <h2>Admin Login</h2>
-            <input type="email" id="email" placeholder="Email" />
-            <input type="password" id="password" placeholder="Password" />
-            <button id="login-btn">Log In</button>
-            <p class="error" id="login-error"></p>
+
+        <!-- ─── LOGIN VIEW ─── -->
+        <div class="admin-login-view" id="login-view">
+            <div class="admin-login-view__glow"></div>
+            <div class="admin-login-view__glow2"></div>
+            <div class="admin-login-card">
+                <img
+                    class="admin-login-card__logo"
+                    src="../media/Rotarty logo title.svg"
+                    alt="Rotary Club of Trivandrum Residency"
+                />
+                <div class="admin-eyebrow">Admin Access</div>
+                <h1 class="admin-login-card__title">
+                    Sign in to manage content
+                </h1>
+                <div class="admin-login-form">
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email"
+                        autocomplete="username"
+                    />
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                    />
+                    <p class="error" id="login-error"></p>
+                    <button id="login-btn" class="admin-login-form__submit">
+                        Log In
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- ─── DASHBOARD VIEW ─── -->
-        <div class="admin-dash" id="dash-view" style="display: none">
-            <div class="admin-layout">
-                <!-- LEFT: tabbed form -->
-                <div class="admin-card form-card">
-                    <div class="tabs">
-                        <button class="tab active" data-tab="article">
-                            Article
-                        </button>
-                        <button class="tab" data-tab="history">History</button>
-                        <button class="tab" data-tab="gallery">Gallery</button>
-                        <button class="tab" data-tab="members">Members</button>
-                    </div>
-
-                    <input type="text" id="f-title" placeholder="Title" />
-                    <input type="date" id="f-date" style="display: none" />
-                    <select id="f-year">
-                        <option value="">Select Rotary year</option>
-                    </select>
-                    <textarea
-                        id="f-body"
-                        placeholder="Article text"
-                        rows="7"
-                    ></textarea>
-                    <input type="file" id="f-image" accept="image/*" />
-                    <button class="publish-btn" id="publish-btn">
-                        Publish Article
+        <div class="admin-shell" id="dash-view" style="display: none">
+            <aside class="admin-sidebar">
+                <div class="admin-sidebar__brand">
+                    <img
+                        src="../media/Rotarty logo title.svg"
+                        alt="Rotary Club of Trivandrum Residency"
+                    />
+                </div>
+                <nav class="admin-sidebar__nav" id="sidebar-nav">
+                    <button
+                        class="admin-sidebar__link active"
+                        data-section="overview"
+                    >
+                        <span class="admin-sidebar__icon">🏠</span>Overview
                     </button>
-                    <p class="form-msg" id="form-msg"></p>
-                </div>
+                    <button class="admin-sidebar__link" data-section="article">
+                        <span class="admin-sidebar__icon">📰</span>Article
+                    </button>
+                    <button class="admin-sidebar__link" data-section="history">
+                        <span class="admin-sidebar__icon">🕰️</span>History
+                    </button>
+                    <button class="admin-sidebar__link" data-section="gallery">
+                        <span class="admin-sidebar__icon">🖼️</span>Gallery
+                    </button>
+                    <button class="admin-sidebar__link" data-section="members">
+                        <span class="admin-sidebar__icon">📁</span>Members
+                    </button>
+                </nav>
+                <button class="admin-sidebar__logout" id="logout-btn">
+                    ↩ Log Out
+                </button>
+            </aside>
 
-                <!-- RIGHT: two list cards -->
-                <div class="admin-lists">
-                    <div class="admin-card list-card">
-                        <h3 class="list-title">Article</h3>
-                        <div id="article-list"></div>
+            <main class="admin-main">
+                <!-- OVERVIEW -->
+                <section class="admin-overview" id="overview-panel">
+                    <div class="admin-eyebrow">Dashboard</div>
+                    <h1 class="admin-page-title">Overview</h1>
+                    <div class="admin-stat-grid" id="stat-grid"></div>
+                </section>
+
+                <!-- SECTION (article / history / gallery / members) -->
+                <section
+                    class="admin-section"
+                    id="section-panel"
+                    style="display: none"
+                >
+                    <div class="admin-section__head">
+                        <div>
+                            <div class="admin-eyebrow">Section</div>
+                            <h1 class="admin-page-title" id="section-title">
+                                Article
+                            </h1>
+                        </div>
+                        <button class="admin-add-btn" id="add-toggle-btn">
+                            + New
+                        </button>
                     </div>
 
-                    <div class="admin-card list-card">
-                        <h3 class="list-title">History</h3>
-                        <div id="history-list"></div>
+                    <div class="admin-form-panel" id="form-panel" style="display: none">
+                        <input type="text" id="f-title" placeholder="Title" />
+                        <input type="date" id="f-date" style="display: none" />
+                        <select id="f-year">
+                            <option value="">Select Rotary year</option>
+                        </select>
+                        <textarea
+                            id="f-body"
+                            placeholder="Article text"
+                            rows="4"
+                        ></textarea>
+                        <input type="file" id="f-image" accept="image/*" />
+                        <p class="form-msg" id="form-msg"></p>
+                        <div class="admin-form-panel__actions">
+                            <button
+                                class="admin-form-panel__cancel"
+                                id="cancel-btn"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                class="admin-form-panel__submit"
+                                id="publish-btn"
+                            >
+                                Publish
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="admin-card list-card">
-                        <h3 class="list-title">Gallery</h3>
-                        <div id="gallery-list"></div>
-                    </div>
+                    <input
+                        type="text"
+                        class="admin-search"
+                        id="search-input"
+                        placeholder="Search this section…"
+                    />
 
-                    <div class="admin-card list-card">
-                        <h3 class="list-title">Members</h3>
-                        <div id="members-list"></div>
-                    </div>
-                </div>
-            </div>
-
-            <button id="logout-btn" class="logout-btn">Log Out</button>
+                    <div class="admin-item-list" id="item-list"></div>
+                </section>
+            </main>
         </div>
 
         <!-- Scripts: library → config → admin logic -->
