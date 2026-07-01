@@ -3,7 +3,18 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Project</title>
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://egdbbovmwpexdkwkuuts.supabase.co; connect-src 'self' https://egdbbovmwpexdkwkuuts.supabase.co wss://egdbbovmwpexdkwkuuts.supabase.co https://www.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+        />
+        <title>Project | Rotary Club of Trivandrum Residency</title>
+        <meta
+            name="description"
+            id="article-meta-description"
+            content="A community project by Rotary Club of Trivandrum Residency, a Rotary club in Kerala."
+        />
+        <link rel="canonical" id="article-canonical" />
         <link
             rel="icon"
             type="image/svg+xml"
@@ -17,8 +28,8 @@
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap"
         />
-        <link rel="stylesheet" href="../css/base.css" />
-        <link rel="stylesheet" href="../css/article.css" />
+        <link rel="stylesheet" href="../css/base.min.css" />
+        <link rel="stylesheet" href="../css/article.min.css" />
     </head>
     <body>
         <div id="navbar-root"></div>
@@ -29,36 +40,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../scripts/supabase-config.js"></script>
         <script src="../scripts/utils.js"></script>
-        <script>
-            async function loadArticle() {
-                const id = new URLSearchParams(location.search).get("id");
-                const el = document.getElementById("article");
-
-                const { data, error } = await supabaseClient
-                    .from("articles")
-                    .select("*")
-                    .eq("id", id)
-                    .single();
-
-                if (error || !data) {
-                    el.innerHTML = `<p class="error">Article not found.</p>`;
-                    return;
-                }
-
-                const safeTitle = escapeHtml(data.title);
-                const safeBody = escapeHtml(data.body).replace(/\n/g, "<br>");
-                const safeYear = escapeHtml(data.rotary_year);
-
-                el.innerHTML = `
-        ${data.image_url ? `<img src="${escapeAttr(data.image_url)}" class="single-img" alt="">` : ""}
-        <h1>${safeTitle}</h1>
-        ${safeYear ? `<p class="rotary-year">Rotary Year ${safeYear}</p>` : ""}
-        <p class="single-body">${safeBody}</p>
-        <a href="../articles/" class="back-link">← Back to all articles</a>
-      `;
-            }
-            loadArticle();
-        </script>
+        <script src="article.js"></script>
         <script src="../scripts/navbar.js"></script>
         <script src="../scripts/footer.js"></script>
     </body>

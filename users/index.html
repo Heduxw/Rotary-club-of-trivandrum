@@ -3,6 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://egdbbovmwpexdkwkuuts.supabase.co; connect-src 'self' https://egdbbovmwpexdkwkuuts.supabase.co wss://egdbbovmwpexdkwkuuts.supabase.co https://www.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+        />
         <title>Member Login | Rotary Club of Trivandrum</title>
         <link
             rel="icon"
@@ -17,42 +23,128 @@
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap"
         />
-        <link rel="stylesheet" href="../css/base.css" />
-        <link rel="stylesheet" href="../css/style-secondary.css" />
+        <link rel="stylesheet" href="../css/base.min.css" />
+        <link rel="stylesheet" href="../css/style-secondary.min.css" />
         <link rel="stylesheet" href="user.css" />
     </head>
     <body>
         <div id="navbar-root"></div>
 
         <!-- ─── LOGIN VIEW ─── -->
-        <div class="user-login" id="login-view">
-            <h2>Member Login</h2>
-            <input type="text" id="username" placeholder="Username" />
-            <input type="password" id="password" placeholder="Password" />
-            <button id="login-btn">Log In</button>
-            <p class="error" id="login-error"></p>
-        </div>
+        <section class="member-hero" id="login-view">
+            <div class="member-hero__glow"></div>
+            <div class="member-hero__glow2"></div>
+            <div class="member-hero__inner container">
+                <div class="member-hero__copy">
+                    <div class="member-eyebrow">Members Only</div>
+                    <h1 class="member-hero__title">Welcome<br />Back</h1>
+                    <p class="member-hero__text">
+                        Sign in with the credentials your secretary shared to
+                        reach meeting minutes, forms, and club announcements.
+                    </p>
+
+                    <div class="member-login-form">
+                        <div>
+                            <label for="username">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                placeholder="your.username"
+                                autocomplete="username"
+                            />
+                        </div>
+                        <div>
+                            <label for="password">Password</label>
+                            <div class="member-login-form__password">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    placeholder="••••••••"
+                                    autocomplete="current-password"
+                                />
+                                <button
+                                    type="button"
+                                    id="toggle-password"
+                                    aria-label="Show password"
+                                >
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+                        <p class="error" id="login-error"></p>
+                        <button id="login-btn" class="member-login-form__submit">
+                            Log In
+                        </button>
+                        <a
+                            href="mailto:info@rotarytrivandrumresidency.in"
+                            class="member-login-form__help"
+                            >Need access? Contact the secretary →</a
+                        >
+                    </div>
+                </div>
+
+                <div class="member-hero__panel">
+                    <div class="member-hero__panel-accent"></div>
+                    <div class="member-hero__panel-ring"></div>
+                    <div class="member-hero__panel-card">
+                        <img
+                            class="member-hero__panel-logo"
+                            src="../media/Rotarty logo title.svg"
+                            alt="Rotary"
+                        />
+                        <div class="member-hero__panel-tagline">
+                            Service Above Self
+                        </div>
+                        <p class="member-hero__panel-text">
+                            A private space for members to stay in step with
+                            the club's work.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- ─── MEMBERS VIEW (after login) ─── -->
-        <section class="articles-section" id="dash-view" style="display: none">
+        <section class="member-dash" id="dash-view" style="display: none">
             <div class="container">
-                <div class="articles-toolbar">
-                    <h1 class="articles-heading">Members Area</h1>
+                <div class="member-dash__head">
+                    <div>
+                        <div class="member-eyebrow">Members Area</div>
+                        <h1 class="member-dash__title">
+                            Welcome back, <span id="member-name">member</span>
+                        </h1>
+                    </div>
                     <button id="logout-btn" class="logout-btn">Log Out</button>
                 </div>
                 <p class="resources-subheading">
-                    Documents and files shared with members.
+                    Documents and updates shared with members.
                 </p>
+
+                <div class="event-banner" id="event-banner">
+                    <span class="event-banner__icon">📣</span>
+                    <div>
+                        <div class="event-banner__title" id="event-banner-title">
+                            Loading upcoming event…
+                        </div>
+                        <div class="event-banner__text" id="event-banner-text"></div>
+                    </div>
+                </div>
+
+                <div class="resource-group__title">Documents &amp; Resources</div>
                 <div class="resource-list" id="resource-list">
                     <p class="loading">Loading files...</p>
                 </div>
             </div>
         </section>
 
+        <div id="footer-root"></div>
+
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../scripts/supabase-config.js"></script>
+        <script src="../scripts/config.js"></script>
         <script src="../scripts/utils.js"></script>
         <script src="user.js"></script>
         <script src="../scripts/navbar.js"></script>
+        <script src="../scripts/footer.js"></script>
     </body>
 </html>

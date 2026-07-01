@@ -20,7 +20,10 @@ function showLogin() {
 function showDashboard() {
   loginView.style.display = "none";
   dashView.style.display = "block";
+  const nameEl = document.getElementById("member-name");
+  if (nameEl) nameEl.textContent = sessionStorage.getItem(SESSION_KEY) || "member";
   loadResources();
+  loadUpcomingEvent();
 }
 
 /* ─── LOGIN ─── */
@@ -28,6 +31,7 @@ async function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
   const err = document.getElementById("login-error");
+  const btn = document.getElementById("login-btn");
 
   if (!username || !password) {
     err.textContent = "Enter your username and password.";
@@ -35,25 +39,30 @@ async function login() {
   }
 
   err.textContent = "Checking...";
+  btn.disabled = true;
 
-  // verify_user is a security-definer function that checks the hashed
-  // password server-side and returns true/false (see setup SQL).
-  const { data, error } = await supabaseClient.rpc("verify_user", {
-    p_username: username,
-    p_password: password,
-  });
+  try {
+    // verify_user is a security-definer function that checks the hashed
+    // password server-side and returns true/false (see setup SQL).
+    const { data, error } = await supabaseClient.rpc("verify_user", {
+      p_username: username,
+      p_password: password,
+    });
 
-  if (error) {
-    err.textContent = "Login failed: " + error.message;
-    return;
-  }
+    if (error) {
+      err.textContent = "Login failed: " + error.message;
+      return;
+    }
 
-  if (data === true) {
-    sessionStorage.setItem(SESSION_KEY, username);
-    err.textContent = "";
-    showDashboard();
-  } else {
-    err.textContent = "Invalid username or password.";
+    if (data === true) {
+      sessionStorage.setItem(SESSION_KEY, username);
+      err.textContent = "";
+      showDashboard();
+    } else {
+      err.textContent = "Invalid username or password.";
+    }
+  } finally {
+    btn.disabled = false;
   }
 }
 
@@ -66,6 +75,74 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   sessionStorage.removeItem(SESSION_KEY);
   showLogin();
 });
+
+/* ─── SHOW/HIDE PASSWORD ─── */
+document.getElementById("toggle-password").addEventListener("click", () => {
+  const pw = document.getElementById("password");
+  const btn = document.getElementById("toggle-password");
+  const show = pw.type === "password";
+  pw.type = show ? "text" : "password";
+  btn.textContent = show ? "Hide" : "Show";
+  btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+});
+
+/* ─── UPCOMING EVENT (Google Calendar) ─── */
+async function loadUpcomingEvent() {
+  const banner = document.getElementById("event-banner");
+  const titleEl = document.getElementById("event-banner-title");
+  const textEl = document.getElementById("event-banner-text");
+  if (!banner) return;
+
+  if (typeof CALENDAR_CONFIG === "undefined") {
+    console.error("CALENDAR_CONFIG not found — check script order in HTML.");
+    banner.style.display = "none";
+    return;
+  }
+
+  const { apiKey, calendarId } = CALENDAR_CONFIG;
+  const url =
+    `https://www.googleapis.com/calendar/v3/calendars/` +
+    `${encodeURIComponent(calendarId)}/events` +
+    `?key=${apiKey}` +
+    `&timeMin=${new Date().toISOString()}` +
+    `&maxResults=1&singleEvents=true&orderBy=startTime`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const event = data.items?.[0];
+
+    if (data.error || !event) {
+      banner.style.display = "none";
+      return;
+    }
+
+    titleEl.textContent = event.summary || "Upcoming event";
+    textEl.textContent = formatEventWhen(event);
+  } catch (err) {
+    console.error("Upcoming event load error:", err);
+    banner.style.display = "none";
+  }
+}
+
+// Formats a Google Calendar event's start time — includes the clock time
+// unless it's an all-day event (which only has a date, no dateTime).
+function formatEventWhen(event) {
+  const isAllDay = !event.start.dateTime;
+  const start = new Date(event.start.dateTime || event.start.date);
+  const dateStr = start.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  if (isAllDay) return dateStr;
+
+  const timeStr = start.toLocaleTimeString("en-GB", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  return `${dateStr}, ${timeStr}`;
+}
 
 /* ─── MEMBER RESOURCES (read-only) ─── */
 async function loadResources() {

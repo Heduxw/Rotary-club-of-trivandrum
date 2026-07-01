@@ -79,16 +79,22 @@ document.getElementById("login-btn").addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const err = document.getElementById("login-error");
+  const btn = document.getElementById("login-btn");
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) {
-    err.textContent = error.message;
-    return;
+  btn.disabled = true;
+  try {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      err.textContent = error.message;
+      return;
+    }
+    showDashboard();
+  } finally {
+    btn.disabled = false;
   }
-  showDashboard();
 });
 
 document.getElementById("logout-btn").addEventListener("click", async () => {
@@ -178,58 +184,63 @@ F.publishBtn.addEventListener("click", async () => {
     return;
   }
   msg.textContent = "Saving...";
+  F.publishBtn.disabled = true;
 
-  let record;
   try {
-    if (currentTab === "gallery") {
-      // Append any newly selected files to the album's existing images
-      const images = editingImages ? [...editingImages] : [];
-      for (const f of files) {
-        images.push(await uploadFile(f));
+    let record;
+    try {
+      if (currentTab === "gallery") {
+        // Append any newly selected files to the album's existing images
+        const images = editingImages ? [...editingImages] : [];
+        for (const f of files) {
+          images.push(await uploadFile(f));
+        }
+        record = { title: title || null, images };
+      } else if (currentTab === "members") {
+        // Keep the existing file unless a new one is chosen
+        let file_url = editingFile?.url || null;
+        let file_name = editingFile?.name || null;
+        let file_type = editingFile?.type || null;
+        if (files[0]) {
+          file_url = await uploadFile(files[0]);
+          file_name = files[0].name;
+          file_type = files[0].type;
+        }
+        record = { title, file_url, file_name, file_type, file_date: date || null };
+      } else {
+        // Keep existing image unless a new file is chosen
+        let imageUrl = editingImageUrl;
+        if (files[0]) imageUrl = await uploadFile(files[0]);
+        record = { title, body, image_url: imageUrl };
+        if (currentTab === "history") record.event_date = date || null;
+        if (currentTab === "article") record.rotary_year = year || null;
       }
-      record = { title: title || null, images };
-    } else if (currentTab === "members") {
-      // Keep the existing file unless a new one is chosen
-      let file_url = editingFile?.url || null;
-      let file_name = editingFile?.name || null;
-      let file_type = editingFile?.type || null;
-      if (files[0]) {
-        file_url = await uploadFile(files[0]);
-        file_name = files[0].name;
-        file_type = files[0].type;
-      }
-      record = { title, file_url, file_name, file_type, file_date: date || null };
-    } else {
-      // Keep existing image unless a new file is chosen
-      let imageUrl = editingImageUrl;
-      if (files[0]) imageUrl = await uploadFile(files[0]);
-      record = { title, body, image_url: imageUrl };
-      if (currentTab === "history") record.event_date = date || null;
-      if (currentTab === "article") record.rotary_year = year || null;
+    } catch (upErr) {
+      msg.textContent = "Image upload failed: " + upErr.message;
+      return;
     }
-  } catch (upErr) {
-    msg.textContent = "Image upload failed: " + upErr.message;
-    return;
-  }
 
-  let error;
-  if (editId) {
-    ({ error } = await supabaseClient
-      .from(table)
-      .update(record)
-      .eq("id", editId));
-  } else {
-    ({ error } = await supabaseClient.from(table).insert(record));
-  }
+    let error;
+    if (editId) {
+      ({ error } = await supabaseClient
+        .from(table)
+        .update(record)
+        .eq("id", editId));
+    } else {
+      ({ error } = await supabaseClient.from(table).insert(record));
+    }
 
-  if (error) {
-    msg.textContent = "Could not save: " + error.message;
-    return;
-  }
+    if (error) {
+      msg.textContent = "Could not save: " + error.message;
+      return;
+    }
 
-  msg.textContent = editId ? "Updated!" : "Published!";
-  resetForm();
-  loadList(currentTab);
+    msg.textContent = editId ? "Updated!" : "Published!";
+    resetForm();
+    loadList(currentTab);
+  } finally {
+    F.publishBtn.disabled = false;
+  }
 });
 
 /* ============================================================
@@ -253,15 +264,25 @@ async function loadList(tabKey) {
       <span class="list-row-title">${escapeHtml(item.title) || "(untitled image)"}</span>
       <span class="list-row-actions">
         <button class="icon-btn" title="Edit"
-          onclick="editItem('${tabKey}','${item.id}')">${PENCIL}</button>
+          data-action="edit" data-tab="${tabKey}" data-id="${item.id}">${PENCIL}</button>
         <button class="icon-btn" title="Delete"
-          onclick="deleteItem('${tabKey}','${item.id}')">${TRASH}</button>
+          data-action="delete" data-tab="${tabKey}" data-id="${item.id}">${TRASH}</button>
       </span>
     </div>
   `,
     )
     .join("");
 }
+
+// Delegated so newly rendered rows (re-rendered on every loadList call)
+// don't need their own listeners rebound each time.
+document.getElementById("dash-view").addEventListener("click", (e) => {
+  const btn = e.target.closest(".icon-btn");
+  if (!btn) return;
+  const { action, tab, id } = btn.dataset;
+  if (action === "edit") editItem(tab, id);
+  else if (action === "delete") deleteItem(tab, id);
+});
 
 /* ─── EDIT — load an item back into the form ─── */
 async function editItem(tabKey, id) {

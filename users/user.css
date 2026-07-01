@@ -1,97 +1,387 @@
 /* ============================================================
-   MEMBER AREA — login box + logout button
-   Shared reset / navbar / article cards live in base.css and
-   style-secondary.css (loaded first).
+   MEMBER AREA — login hero + dashboard
+   Shared reset / navbar / footer / container live in base.css
+   and style-secondary.css (loaded first).
    ============================================================ */
 
-.user-login {
+.member-eyebrow {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 16px;
+}
+
+/* ─── LOGIN HERO ─── */
+.member-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 78px);
+    display: flex;
+    align-items: center;
+    padding: 76px 0 90px;
+}
+
+.member-hero__glow,
+.member-hero__glow2 {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(50px);
+}
+
+.member-hero__glow {
+    width: 520px;
+    height: 520px;
+    right: -120px;
+    top: -80px;
+    background: radial-gradient(circle, rgba(247, 168, 27, 0.2), transparent 64%);
+}
+
+.member-hero__glow2 {
+    width: 480px;
+    height: 480px;
+    left: -160px;
+    bottom: -140px;
+    background: radial-gradient(circle, rgba(0, 103, 200, 0.16), transparent 64%);
+}
+
+.member-hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 64px;
+    align-items: center;
+}
+
+.member-hero__title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin: 0 0 18px;
+}
+
+.member-hero__text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 420px;
+    margin: 0 0 34px;
+}
+
+/* ─── LOGIN FORM ─── */
+.member-login-form {
     max-width: 380px;
-    margin: 4rem auto;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 14px;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-.user-login h2 {
-    color: var(--secondary-color);
-    margin-bottom: 1.2rem;
+.member-login-form label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--navy);
+    margin-bottom: 6px;
 }
 
-.user-login input {
+.member-login-form input {
     width: 100%;
-    padding: 0.7rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
+    height: 50px;
+    padding: 0 16px;
+    border: 1.5px solid #d3dbe8;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.member-login-form input:focus {
+    border-color: var(--blue);
+}
+
+.member-login-form__password {
+    position: relative;
+}
+
+.member-login-form__password input {
+    padding-right: 46px;
+}
+
+/* Hide each browser's own built-in password reveal/autofill icon so it
+   doesn't stack with our custom Show/Hide button on the same field. */
+.member-login-form__password input::-ms-reveal,
+.member-login-form__password input::-ms-clear {
+    display: none;
+}
+
+.member-login-form__password input::-webkit-credentials-auto-fill-button,
+.member-login-form__password input::-webkit-strong-password-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+
+.member-login-form__password button {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    bottom: 4px;
+    width: 42px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
     font-family: inherit;
 }
 
-.user-login input:focus {
-    outline: none;
-    border-color: var(--secondary-color);
+.member-login-form .error {
+    color: #c0392b;
+    font-size: 14px;
+    margin: 0;
 }
 
-.user-login button {
-    background: var(--secondary-color);
+.member-login-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 54px;
+    padding: 0 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    background: var(--blue);
     color: #fff;
     border: none;
-    padding: 0.7rem 1.4rem;
-    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
+    box-shadow: 0 14px 32px rgba(23, 69, 143, 0.28);
+    font-family: inherit;
+    margin-top: 6px;
     transition: opacity 0.2s;
 }
 
-.user-login button:hover {
-    opacity: 0.9;
+.member-login-form__submit:hover {
+    opacity: 0.92;
 }
 
-.user-login .error {
-    color: #c0392b;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
+.member-login-form__help {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-top: 4px;
+}
+
+/* ─── DECORATIVE PANEL (desktop only) ─── */
+.member-hero__panel {
+    position: relative;
+}
+
+.member-hero__panel-accent {
+    position: absolute;
+    inset: -18px -18px auto auto;
+    width: 64%;
+    height: 64%;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--gold), #ffc759);
+    z-index: 0;
+}
+
+.member-hero__panel-ring {
+    position: absolute;
+    left: -22px;
+    bottom: -22px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 6px solid rgba(23, 69, 143, 0.14);
+    z-index: 0;
+    animation: member-spin 60s linear infinite;
+}
+
+@keyframes member-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.member-hero__panel-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 420px;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(165deg, var(--navy-deep), var(--blue));
+    box-shadow: 0 24px 60px rgba(20, 40, 80, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 40px;
+    text-align: center;
+}
+
+.member-hero__panel-logo {
+    height: 64px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+}
+
+.member-hero__panel-tagline {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.member-hero__panel-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 280px;
+    margin: 0;
+}
+
+@media (max-width: 760px) {
+    .member-hero {
+        min-height: 0;
+        padding: 36px 0 56px;
+    }
+
+    .member-hero__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .member-hero__panel {
+        display: none;
+    }
+}
+
+/* ─── DASHBOARD ─── */
+.member-dash {
+    background: #f4f4f4;
+    padding: 52px 0 96px;
+    min-height: calc(100vh - 78px);
+}
+
+.member-dash__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.member-dash__title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(26px, 3.5vw, 34px);
+    color: var(--navy);
+    margin: 0;
 }
 
 .logout-btn {
-    background: #c0392b;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1.2rem;
-    border-radius: 6px;
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--blue);
+    border: 1.5px solid #d3dbe8;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: inherit;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: bold;
 }
 
 .logout-btn:hover {
-    opacity: 0.9;
+    opacity: 0.85;
+}
+
+.resources-subheading {
+    color: var(--muted);
+    font-size: 16px;
+    margin: 6px 0 32px;
+}
+
+/* ─── UPCOMING EVENT BANNER ─── */
+.event-banner {
+    border-radius: 16px;
+    background: linear-gradient(120deg, var(--gold), #ffc759);
+    padding: 20px 26px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    box-shadow: 0 14px 32px rgba(247, 168, 27, 0.24);
+}
+
+.event-banner__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+}
+
+.event-banner__title {
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--navy);
+    font-family: var(--font-head);
+}
+
+.event-banner__text {
+    font-size: 14px;
+    color: rgba(19, 32, 58, 0.75);
 }
 
 /* ─── Member resources list ─── */
-.resources-subheading {
-    color: #555;
-    margin-bottom: 1.5rem;
+.resource-group__title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
 }
 
 .resource-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 10px;
 }
 
 .resource-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
     background: #fff;
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(20, 40, 80, 0.06);
     text-decoration: none;
-    color: var(--text-color);
+    color: inherit;
     transition:
         transform 0.15s,
         box-shadow 0.15s;
@@ -99,12 +389,12 @@
 
 .resource-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 24px rgba(20, 40, 80, 0.12);
     text-decoration: none;
 }
 
 .resource-icon {
-    font-size: 1.8rem;
+    font-size: 26px;
     flex-shrink: 0;
 }
 
@@ -113,22 +403,24 @@
     flex-direction: column;
     flex: 1;
     min-width: 0;
+    gap: 2px;
 }
 
 .resource-title {
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--blue);
+    font-size: 15.5px;
 }
 
 .resource-date {
-    font-size: 0.8rem;
+    font-size: 12.5px;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--gold-dark);
 }
 
 .resource-name {
-    font-size: 0.85rem;
-    color: #888;
+    font-size: 12.5px;
+    color: #999;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -136,6 +428,7 @@
 
 .resource-action {
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--gold-dark);
+    font-size: 14px;
     flex-shrink: 0;
 }
