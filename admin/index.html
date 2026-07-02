@@ -17,7 +17,10 @@
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="preconnect" href="https://egdbbovmwpexdkwkuuts.supabase.co" />
+        <link
+            rel="preconnect"
+            href="https://egdbbovmwpexdkwkuuts.supabase.co"
+        />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
             rel="stylesheet"
@@ -81,7 +84,7 @@
                         <span class="admin-sidebar__icon">🏠</span>Overview
                     </button>
                     <button class="admin-sidebar__link" data-section="article">
-                        <span class="admin-sidebar__icon">📰</span>Article
+                        <span class="admin-sidebar__icon">📰</span>Projects
                     </button>
                     <button class="admin-sidebar__link" data-section="history">
                         <span class="admin-sidebar__icon">🕰️</span>History
@@ -106,7 +109,7 @@
                     <div class="admin-stat-grid" id="stat-grid"></div>
                 </section>
 
-                <!-- SECTION (article / history / gallery / members) -->
+                <!-- SECTION (Projects / history / gallery / members) -->
                 <section
                     class="admin-section"
                     id="section-panel"
@@ -116,7 +119,7 @@
                         <div>
                             <div class="admin-eyebrow">Section</div>
                             <h1 class="admin-page-title" id="section-title">
-                                Article
+                                Projects
                             </h1>
                         </div>
                         <button class="admin-add-btn" id="add-toggle-btn">
@@ -124,7 +127,11 @@
                         </button>
                     </div>
 
-                    <div class="admin-form-panel" id="form-panel" style="display: none">
+                    <div
+                        class="admin-form-panel"
+                        id="form-panel"
+                        style="display: none"
+                    >
                         <input type="text" id="f-title" placeholder="Title" />
                         <input type="date" id="f-date" style="display: none" />
                         <select id="f-year">
@@ -132,7 +139,7 @@
                         </select>
                         <textarea
                             id="f-body"
-                            placeholder="Article text"
+                            placeholder="Projects text"
                             rows="4"
                         ></textarea>
                         <input type="file" id="f-image" accept="image/*" />
