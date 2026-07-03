@@ -8,7 +8,8 @@
 .single-hero {
     position: relative;
     height: 380px;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
     background-color: var(--navy-deep);
     display: flex;

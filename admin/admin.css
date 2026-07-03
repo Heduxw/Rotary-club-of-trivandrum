@@ -51,7 +51,7 @@ body.admin-dashboard-active .site-nav {
 .admin-login-view {
     position: relative;
     overflow: hidden;
-    min-height: calc(100vh);
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
