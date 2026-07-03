@@ -1,4 +1,7 @@
 let allArticles = []; // cached so the year filter doesn't refetch
+let overflowYears = []; // years tucked into the "More" pill
+
+const MAX_VISIBLE_YEAR_PILLS = 5;
 
 async function loadArticles() {
   const grid = document.getElementById("articles-grid");
@@ -19,22 +22,73 @@ async function loadArticles() {
   renderArticles("all");
 }
 
-// Fill the dropdown with the distinct rotary years found in the projects
+// Render the distinct rotary years found in the projects as pill buttons,
+// tucking any beyond MAX_VISIBLE_YEAR_PILLS into a select styled as a pill.
 function buildYearFilter() {
-  const select = document.getElementById("year-filter");
-  if (!select) return;
+  const wrap = document.getElementById("year-pills");
+  if (!wrap) return;
 
   const years = [
     ...new Set(allArticles.map((a) => a.rotary_year).filter(Boolean)),
   ].sort((a, b) => b.localeCompare(a)); // newest year first
 
-  select.innerHTML =
-    `<option value="all">All years</option>` +
-    years
-      .map((y) => `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`)
-      .join("");
+  const visibleYears = years.slice(0, MAX_VISIBLE_YEAR_PILLS);
+  overflowYears = years.slice(MAX_VISIBLE_YEAR_PILLS);
 
-  select.addEventListener("change", () => renderArticles(select.value));
+  let html = `<button type="button" class="year-pill active" data-year="all">All</button>`;
+  html += visibleYears
+    .map(
+      (y) =>
+        `<button type="button" class="year-pill" data-year="${escapeAttr(y)}">${escapeHtml(y)}</button>`,
+    )
+    .join("");
+
+  if (overflowYears.length) {
+    html += `
+      <label class="year-pill year-pill-more">
+        <select id="year-more-select" aria-label="More rotary years">
+          <option value="">More…</option>
+          ${overflowYears
+            .map(
+              (y) =>
+                `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`,
+            )
+            .join("")}
+        </select>
+      </label>`;
+  }
+
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll(".year-pill[data-year]").forEach((btn) => {
+    btn.addEventListener("click", () => selectYear(btn.dataset.year));
+  });
+
+  const moreSelect = document.getElementById("year-more-select");
+  if (moreSelect) {
+    moreSelect.addEventListener("change", () => {
+      if (moreSelect.value) selectYear(moreSelect.value);
+    });
+  }
+}
+
+function selectYear(year) {
+  const wrap = document.getElementById("year-pills");
+  if (wrap) {
+    wrap.querySelectorAll(".year-pill[data-year]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.year === year);
+    });
+  }
+
+  const morePill = document.querySelector(".year-pill-more");
+  const moreSelect = document.getElementById("year-more-select");
+  if (morePill && moreSelect) {
+    const isOverflowYear = overflowYears.includes(year);
+    morePill.classList.toggle("active", isOverflowYear);
+    moreSelect.value = isOverflowYear ? year : "";
+  }
+
+  renderArticles(year);
 }
 
 function renderArticles(year) {

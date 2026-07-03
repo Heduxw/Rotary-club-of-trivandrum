@@ -48,8 +48,6 @@
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
-          <span>VRA 59, Lavanya, Mosque Lane, Kesavadasapuram,
-            Thiruvananthapuram, Kerala, India</span>
           <a href="mailto:info@rotarytrivandrumresidency.in"
             >info@rotarytrivandrumresidency.in</a>
           <a href="tel:+919496063303">+91 94960 63303</a>

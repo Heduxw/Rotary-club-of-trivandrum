@@ -17,7 +17,7 @@
   const nav = document.createElement("nav");
   nav.className = "site-nav";
   nav.innerHTML = `
-    <a class="site-nav__brand" href="${link("index.html")}">
+    <a class="site-nav__brand" href="${link("")}">
       <img
         class="site-nav__logo-img"
         src="${link("media/Rotary club of trivandrum.svg")}"
@@ -28,11 +28,11 @@
       <span></span><span></span><span></span>
     </button>
     <div class="site-nav__menu">
-      <a href="${link("index.html")}">Home</a>
+      <a href="${link("")}">Home</a>
       <div class="site-nav__dropdown">
         <a href="#" class="site-nav__droptoggle">About ▾</a>
         <div class="site-nav__dropmenu">
-          <a href="${link("index.html#team")}">Our Team</a>
+          <a href="${link("#team")}">Our Team</a>
           <a href="${link("history/")}">History</a>
         </div>
       </div>
@@ -57,11 +57,14 @@
     });
 
     nav.querySelectorAll(".site-nav__dropdown").forEach((d) => {
-      d.querySelector(".site-nav__droptoggle").addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        d.classList.toggle("open");
-      });
+      d.querySelector(".site-nav__droptoggle").addEventListener(
+        "click",
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          d.classList.toggle("open");
+        },
+      );
     });
 
     // Click anywhere else closes the mobile menu + any open dropdown
