@@ -21,7 +21,7 @@ async function loadHistory() {
     .map(
       (item) => `
     <div class="article-card">
-      ${item.image_url ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title)}">` : ""}
+      ${item.image_url ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title)}" loading="lazy">` : ""}
       <div class="article-card-body">
         <h2>${escapeHtml(item.title)}</h2>
         ${item.event_date ? `<p class="event-date">${formatDate(item.event_date)}</p>` : ""}

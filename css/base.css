@@ -193,12 +193,15 @@ main {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 28px;
-    height: 20px;
+    /* 44x44 tap target (WCAG-recommended minimum) while the visible
+       icon itself stays 28x20 — box-sizing:border-box means this
+       padding eats into the box rather than growing the icon. */
+    width: 44px;
+    height: 44px;
+    padding: 12px 8px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
 }
 
 .site-nav__burger span {
@@ -300,7 +303,6 @@ main {
     height: 44px;
     width: auto;
     object-fit: contain;
-    padding: 8px px;
     border-radius: 10px;
 }
 

@@ -13,13 +13,13 @@ const SESSION_KEY = "rotary_member";
 
 /* ─── VIEWS ─── */
 function showLogin() {
-  loginView.style.display = "block";
+  loginView.style.display = "";
   dashView.style.display = "none";
 }
 
 function showDashboard() {
   loginView.style.display = "none";
-  dashView.style.display = "block";
+  dashView.style.display = "";
   const nameEl = document.getElementById("member-name");
   if (nameEl) nameEl.textContent = sessionStorage.getItem(SESSION_KEY) || "member";
   loadResources();

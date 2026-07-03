@@ -110,7 +110,7 @@ function renderArticles(year) {
     <a href="article.html?id=${encodeURIComponent(article.id)}" class="article-card">
       ${
         article.image_url
-          ? `<img src="${escapeAttr(article.image_url)}" alt="${escapeAttr(article.title)}">`
+          ? `<img src="${escapeAttr(article.image_url)}" alt="${escapeAttr(article.title)}" loading="lazy">`
           : ""
       }
       <div class="article-card-body">

@@ -246,20 +246,33 @@
     right: 0;
     z-index: 6;
     display: flex;
-    gap: 9px;
+    flex-wrap: wrap;
+    gap: 2px;
     justify-content: center;
 }
 
+/* Each dot gets a 24x24 tap target — the visible dot stays a small
+   10px circle drawn with ::before so the enlarged hit area doesn't
+   crowd the slideshow visually. */
 .dot {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.dot::before {
+    content: "";
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.55);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
     transition: background 0.3s;
 }
-.dot.active {
+.dot.active::before {
     background: var(--gold);
 }
 

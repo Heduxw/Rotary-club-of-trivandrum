@@ -1,6 +1,7 @@
 /* ============================================================
-   SLIDESHOW — images pulled from Supabase (articles + history)
-   Clicking a slide opens the matching article or history page
+   SLIDESHOW — images pulled from Gallery albums, Projects
+   (articles) and History combined, same as the Gallery page.
+   Clicking a slide opens the Gallery page.
    The navbar lives in scripts/navbar.js
    ============================================================ */
 let slideshowPhotos = []; // filled from Supabase
@@ -63,16 +64,9 @@ const slider = {
     });
   },
 
-  // Open the right page for the current slide
+  // Every slide comes from the Gallery, so clicking one just opens it
   openCurrent() {
-    const photo = slideshowPhotos[this.current];
-    if (!photo?.id) return;
-
-    if (photo.type === "history") {
-      window.location.href = `history/?id=${photo.id}`;
-    } else {
-      window.location.href = `articles/article.html?id=${photo.id}`;
-    }
+    window.location.href = "gallery/";
   },
 
   bindEvents() {
@@ -122,7 +116,7 @@ const slider = {
 };
 
 /* ============================================================
-   FETCH IMAGES FROM SUPABASE (articles + history combined)
+   FETCH IMAGES FROM SUPABASE (Gallery albums, newest first)
    ============================================================ */
 async function loadSlideshowImages() {
   // Only the home page has a slideshow — skip the DB queries everywhere else
@@ -133,37 +127,59 @@ async function loadSlideshowImages() {
     return;
   }
 
-  // Query both tables in parallel
-  const [articlesRes, historyRes] = await Promise.all([
+  // The Gallery page shows every photo the club has: albums added through
+  // the admin Gallery section, plus every Project (article) and History
+  // image. The slideshow draws from that same combined pool.
+  const [galleryRes, articlesRes, historyRes] = await Promise.all([
+    supabaseClient
+      .from("gallery")
+      .select("title, images, created_at")
+      .order("created_at", { ascending: false }),
     supabaseClient
       .from("articles")
-      .select("id, title, image_url, created_at")
+      .select("title, image_url, created_at")
       .not("image_url", "is", null),
     supabaseClient
       .from("history")
-      .select("id, title, image_url, created_at")
+      .select("title, image_url, event_date")
       .not("image_url", "is", null),
   ]);
 
-  if (articlesRes.error)
-    console.error("Articles load error:", articlesRes.error);
+  if (galleryRes.error) console.error("Gallery load error:", galleryRes.error);
+  if (articlesRes.error) console.error("Articles load error:", articlesRes.error);
   if (historyRes.error) console.error("History load error:", historyRes.error);
 
-  // Map each table's rows into a common slide shape, tagging the source
-  const toSlides = (rows, type) =>
-    (rows || []).map((row) => ({
-      id: row.id,
-      src: row.image_url,
-      caption: row.title,
-      type,
-      created_at: row.created_at,
-    }));
+  slideshowPhotos = [];
 
-  // Merge and sort newest first across both sources
-  slideshowPhotos = [
-    ...toSlides(articlesRes.data, "article"),
-    ...toSlides(historyRes.data, "history"),
-  ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  (galleryRes.data || []).forEach((album) => {
+    if (!Array.isArray(album.images)) return;
+    album.images.forEach((url) => {
+      slideshowPhotos.push({
+        src: url,
+        caption: album.title || "",
+        sortAt: album.created_at,
+      });
+    });
+  });
+
+  (articlesRes.data || []).forEach((row) => {
+    slideshowPhotos.push({
+      src: row.image_url,
+      caption: row.title || "",
+      sortAt: row.created_at,
+    });
+  });
+
+  (historyRes.data || []).forEach((row) => {
+    slideshowPhotos.push({
+      src: row.image_url,
+      caption: row.title || "",
+      sortAt: row.event_date,
+    });
+  });
+
+  // Newest first across all three sources
+  slideshowPhotos.sort((a, b) => new Date(b.sortAt) - new Date(a.sortAt));
 
   slider.init();
 }
